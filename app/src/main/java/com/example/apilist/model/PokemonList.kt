@@ -1,6 +1,4 @@
-package com.example.apilist.api
-
-import com.example.apilist.api.Data
+package com.example.apilist.model
 
 data class PokemonList(
     val count: Int,

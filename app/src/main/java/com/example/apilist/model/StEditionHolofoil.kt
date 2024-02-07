@@ -1,6 +1,6 @@
-package com.example.apilist.api
+package com.example.apilist.model
 
-data class UnlimitedHolofoil(
+data class StEditionHolofoil(
     val directLow: Double,
     val high: Double,
     val low: Double,

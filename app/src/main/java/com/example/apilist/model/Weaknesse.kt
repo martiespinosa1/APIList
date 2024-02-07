@@ -1,4 +1,4 @@
-package com.example.apilist.api
+package com.example.apilist.model
 
 data class Weaknesse(
     val type: String,

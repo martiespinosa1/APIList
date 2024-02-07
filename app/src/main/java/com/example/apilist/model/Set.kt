@@ -1,7 +1,4 @@
-package com.example.apilist.api
-
-import com.example.apilist.api.ImagesX
-import com.example.apilist.api.Legalities
+package com.example.apilist.model
 
 data class Set(
     val id: String,
