@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.apilist.api.Repository
 import com.example.apilist.model.Data
+import com.example.apilist.model.PokemonList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,7 +16,7 @@ class ViewModel: ViewModel() {
     private val repository = Repository()
     private val _loading = MutableLiveData(true)
     val loading = _loading
-    private val _characters = MutableLiveData<Data>()
+    private val _characters = MutableLiveData<PokemonList>()
     val characters = _characters
 
     fun getCharacters(){
