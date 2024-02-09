@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -44,6 +45,7 @@ fun Launch(alphaAnim: Float) {
     //)
 
     Column(
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -55,26 +57,20 @@ fun Launch(alphaAnim: Float) {
             modifier = Modifier
                 .requiredSize(250.dp)
                 .clip(shape = RoundedCornerShape(25.dp))
+                .align(Alignment.CenterHorizontally)
+                .alpha(alphaAnim)
         )
-    }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 100.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        val colorGrisClaro = Color(.75f, 0.75f, 0.75f) // Gris claro
         Text(
             text = "API List App",
             fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.Monospace,
-            color = Color.DarkGray,
-            modifier = Modifier.padding(top = 150.dp).alpha(alphaAnim)
+            modifier = Modifier.padding(top = 30.dp).alpha(alphaAnim)
         )
     }
 }
+
 
 @Composable
 fun LaunchAnimation(navController: NavController) {

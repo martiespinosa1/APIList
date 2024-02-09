@@ -37,6 +37,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apilist.model.Data
 import com.example.apilist.model.PokemonList
+import com.example.apilist.view.Detail
 import com.example.apilist.view.List
 
 
@@ -57,6 +58,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(Routes.Launch.route) { LaunchAnimation(navigationController) }
                         composable(Routes.List.route) { List(navigationController, myViewModel) }
+                        composable(Routes.Detail.route) { Detail(navigationController, myViewModel) }
                     }
 
                 }
