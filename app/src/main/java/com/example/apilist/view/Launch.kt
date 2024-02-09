@@ -36,14 +36,14 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun Launch(alphaAnim: Float) {
-    Image(
-        painter = painterResource(id = R.drawable.gengar),
-        contentDescription = "fondo",
-        modifier = Modifier.fillMaxSize(),
-        contentScale = ContentScale.Crop
-    )
+    //Image(
+        //painter = painterResource(id = R.drawable.gengar),
+        //contentDescription = "fondo",
+        //modifier = Modifier.fillMaxSize(),
+        //contentScale = ContentScale.Crop
+    //)
 
-    Column(modifier = Modifier.requiredSize(150.dp),
+    Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -53,7 +53,7 @@ fun Launch(alphaAnim: Float) {
             contentDescription = "logo",
             alpha = alphaAnim,
             modifier = Modifier
-                .requiredSize(150.dp)
+                .requiredSize(250.dp)
                 .clip(shape = RoundedCornerShape(25.dp))
         )
     }
@@ -67,7 +67,7 @@ fun Launch(alphaAnim: Float) {
     ) {
         val colorGrisClaro = Color(.75f, 0.75f, 0.75f) // Gris claro
         Text(
-            text = "Trivial App",
+            text = "API List App",
             fontSize = 30.sp,
             fontFamily = FontFamily.Monospace,
             color = Color.DarkGray,

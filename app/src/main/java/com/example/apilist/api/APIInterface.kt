@@ -11,11 +11,11 @@ import retrofit2.http.Url
 
 interface APIInterface {
 
-    @GET("characters")
+    @GET("cards")
     suspend fun getCharacters(): Response<PokemonList>
 
     companion object {
-        val BASE_URL = "https://api.pokemontcg.io/v2/cards/"
+        val BASE_URL = "https://api.pokemontcg.io/v2/"
         fun create(): APIInterface {
             val client = OkHttpClient.Builder().build()
             val retrofit = Retrofit.Builder()

@@ -59,53 +59,11 @@ class MainActivity : ComponentActivity() {
                         composable(Routes.List.route) { List(navigationController, myViewModel) }
                     }
 
-                    MyRecyclerView(myViewModel)
                 }
             }
         }
     }
 }
 
-@Composable
-fun MyRecyclerView(myViewModel: ViewModel) {
-    val showLoading: Boolean by myViewModel.loading.observeAsState(true)
-    val cards: PokemonList by myViewModel.characters.observeAsState(PokemonList(0, emptyList(), 0, 0, 0))
-    myViewModel.getCharacters()
-    if(showLoading){
-        CircularProgressIndicator(
-            modifier = Modifier.width(64.dp),
-            color = MaterialTheme.colorScheme.secondary
-        )
-    }
-    else{
-        LazyColumn() {
-            items(cards.data) { CharacterItem(character = it) }
-        }
-    }
-}
 
-@OptIn(ExperimentalGlideComposeApi::class)
-@Composable
-fun CharacterItem(character: Data) {
-    Card(
-        border = BorderStroke(2.dp, Color.LightGray),
-        shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.padding(8.dp)
-    ) {
-        Row(modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()) {
-            GlideImage(
-                model = character.images,
-                contentDescription = "Character Image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.size(100.dp)
-            )
-            Text(
-                text = character.name,
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center, modifier = Modifier.fillMaxSize()
-            )
-        }
-    }
-}
+
