@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 class ViewModel: ViewModel() {
 
-    private val _id = ""
+    private var _id = ""
     var id = _id
 
     private val repository = Repository()
@@ -23,8 +23,8 @@ class ViewModel: ViewModel() {
     private val _characters = MutableLiveData<PokemonList>()
     val characters = _characters
     
-    private var _pokemon = Data(emptyList(), emptyList(), 0, "", emptyList(), "", "", "", Images("",""), "", "", emptyList(), "", "", "", emptyList(), emptyList(), emptyList(), emptyList(), "", emptyList(), emptyList())
-    val pokemon = _pokemon
+    private var _pokemon = Data(emptyList(), emptyList(), 0, "", emptyList(), "", "", "", Images("",""), "", "cedcverve", emptyList(), "", "", "", emptyList(), emptyList(), emptyList(), emptyList(), "", emptyList(), emptyList())
+    var pokemon = _pokemon
 
     fun getCharacters(){
         CoroutineScope(Dispatchers.IO).launch {
@@ -41,7 +41,7 @@ class ViewModel: ViewModel() {
         }
     }
 
-    fun getCharactersById(){
+    fun getCharacterById(){
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getCharacterById(_id)
             withContext(Dispatchers.Main) {

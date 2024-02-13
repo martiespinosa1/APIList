@@ -74,6 +74,7 @@ fun CharacterItem(character: Data, navController: NavController, myViewModel: Vi
     Card(
         onClick = {
             myViewModel.id = character.id
+            myViewModel.getCharacterById()
             navController.navigate(Routes.Detail.route)
         },
         border = BorderStroke(2.dp, Color.LightGray),
