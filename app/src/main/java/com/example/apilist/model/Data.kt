@@ -10,7 +10,6 @@ data class Data(
     val hp: String,
     val id: String,
     val images: Images,
-    val legalities: Legalities,
     val level: String,
     val name: String,
     val nationalPokedexNumbers: List<Int>,

@@ -7,12 +7,17 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Url
 
 interface APIInterface {
 
     @GET("cards")
     suspend fun getCharacters(): Response<PokemonList>
+
+    @GET("cards/{id}")
+    suspend fun getCharacterById(@Path("id") id: String): Response<Data>
+
 
     companion object {
         val BASE_URL = "https://api.pokemontcg.io/v2/"

@@ -62,7 +62,7 @@ fun MyRecyclerView(myViewModel: ViewModel, navController: NavController) {
     else{
         LazyColumn() {
             items(cards.data) { card ->
-                CharacterItem(character = card, navController = navController) }
+                CharacterItem(character = card, navController = navController, myViewModel = myViewModel) }
         }
     }
 }
@@ -70,9 +70,12 @@ fun MyRecyclerView(myViewModel: ViewModel, navController: NavController) {
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterItem(character: Data, navController: NavController) {
+fun CharacterItem(character: Data, navController: NavController, myViewModel: ViewModel) {
     Card(
-        onClick = { navController.navigate(Routes.Detail.route) },
+        onClick = {
+            myViewModel.id = character.id
+            navController.navigate(Routes.Detail.route)
+        },
         border = BorderStroke(2.dp, Color.LightGray),
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.padding(8.dp),
