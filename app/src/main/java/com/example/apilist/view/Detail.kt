@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -35,7 +37,7 @@ import com.example.apilist.model.PokemonList
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Detail(navController: NavController, myViewModel: ViewModel) {
-    val poke: Pokemon by myViewModel.pokemon.observeAsState(Pokemon(Data(emptyList(), emptyList(), 0, "", emptyList(), "", "", "", Images("",""), "", "", emptyList(), "", "", "", emptyList(), emptyList(), emptyList(), emptyList(), "", emptyList(), emptyList())))
+    val poke: Pokemon by myViewModel.pokemon.observeAsState(Pokemon(Data(emptyList(), emptyList(), 0, "", emptyList(), "", "", "", Images("",""), "", "", emptyList(), "", "", "", emptyList(), emptyList(), emptyList(), emptyList(), "", emptyList(), emptyList(), emptyList(), emptyList())))
     myViewModel.getCharacterById()
 
     Column(
@@ -58,16 +60,30 @@ fun Detail(navController: NavController, myViewModel: ViewModel) {
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.Monospace
         )
-        Text(
-            text = "HP: ${poke.data.hp}",
-            fontSize = 21.sp,
-            fontFamily = FontFamily.Monospace
-        )
-        Text(
-            text = "Rarity: ${poke.data.rarity}",
-            fontSize = 21.sp,
-            fontFamily = FontFamily.Monospace
-        )
+        Box(modifier = Modifier.padding(top = 50.dp)) {
+            Column (
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.Start
+            )
+            {
+
+                Text(
+                    text = "HP: ${poke.data.hp}",
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Monospace
+                )
+                Text(
+                    text = "Rarity: ${poke.data.rarity}",
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Monospace
+                )
+                Text(
+                    text = "Current price: ${poke.data.id}",
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Monospace
+                )
+            }
+        }
     }
 }
 

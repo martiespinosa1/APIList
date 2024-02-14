@@ -22,5 +22,7 @@ data class Data(
     val subtypes: List<String>,
     val supertype: String,
     val types: List<String>,
-    val weaknesses: List<Weaknesse>
+    val weaknesses: List<Weaknesse>,
+    val cardmarket: List<Cardmarket>,
+    val prices: List<Prices>
 )
