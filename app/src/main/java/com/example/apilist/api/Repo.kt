@@ -8,5 +8,5 @@ class Repository {
 
 
     suspend fun getAllCharacters() = apiInterface.getCharacters()
-    suspend fun getCharacterById(id: String) = apiInterface.getCharacterById(id)
+    suspend fun getCharacterById(id: String) = apiInterface.getCharacterById()
 }

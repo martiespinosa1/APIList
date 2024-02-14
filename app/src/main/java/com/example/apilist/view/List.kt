@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
@@ -74,7 +75,6 @@ fun CharacterItem(character: Data, navController: NavController, myViewModel: Vi
     Card(
         onClick = {
             myViewModel.id = character.id
-            myViewModel.getCharacterById()
             navController.navigate(Routes.Detail.route)
         },
         border = BorderStroke(2.dp, Color.LightGray),

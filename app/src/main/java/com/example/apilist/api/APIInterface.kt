@@ -1,6 +1,7 @@
 package com.example.apilist.api
 
 import com.example.apilist.model.Data
+import com.example.apilist.model.Pokemon
 import com.example.apilist.model.PokemonList
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -15,8 +16,8 @@ interface APIInterface {
     @GET("cards")
     suspend fun getCharacters(): Response<PokemonList>
 
-    @GET("cards/{id}")
-    suspend fun getCharacterById(@Path("id") id: String): Response<Data>
+    @GET("cards/dp3-1")
+    suspend fun getCharacterById(): Response<Pokemon>
 
 
     companion object {
