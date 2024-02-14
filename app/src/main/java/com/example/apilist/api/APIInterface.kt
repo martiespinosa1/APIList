@@ -16,8 +16,8 @@ interface APIInterface {
     @GET("cards")
     suspend fun getCharacters(): Response<PokemonList>
 
-    @GET("cards/dp3-1")
-    suspend fun getCharacterById(): Response<Pokemon>
+    @GET("cards/{id}")
+    suspend fun getCharacterById(@Path("id") id: String): Response<Pokemon>
 
 
     companion object {

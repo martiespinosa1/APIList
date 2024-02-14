@@ -1,8 +1,10 @@
 package com.example.apilist.view
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,27 +35,37 @@ import com.example.apilist.model.PokemonList
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Detail(navController: NavController, myViewModel: ViewModel) {
-    val poke: Pokemon by myViewModel.pokemon.observeAsState(Pokemon(Data(emptyList(), emptyList(), 0, "", emptyList(), "", "", "", Images("",""), "", "cedcverve", emptyList(), "", "", "", emptyList(), emptyList(), emptyList(), emptyList(), "", emptyList(), emptyList())))
+    val poke: Pokemon by myViewModel.pokemon.observeAsState(Pokemon(Data(emptyList(), emptyList(), 0, "", emptyList(), "", "", "", Images("",""), "", "", emptyList(), "", "", "", emptyList(), emptyList(), emptyList(), emptyList(), "", emptyList(), emptyList())))
     myViewModel.getCharacterById()
 
-    Text(
-        text = myViewModel.id,
-        fontSize = 23.sp,
-        fontWeight = FontWeight.Bold,
-        fontFamily = FontFamily.Monospace
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(50.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
     )
-    Column(modifier = Modifier.fillMaxSize())
     {
         GlideImage(
             model = poke.data.images.large,
             contentDescription = "Card Image",
             contentScale = ContentScale.FillHeight,
-            modifier = Modifier.size(125.dp)
+            modifier = Modifier.size(300.dp)
         )
         Text(
             text = poke.data.name,
-            fontSize = 23.sp,
+            fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Monospace
+        )
+        Text(
+            text = "HP: ${poke.data.hp}",
+            fontSize = 21.sp,
+            fontFamily = FontFamily.Monospace
+        )
+        Text(
+            text = "Rarity: ${poke.data.rarity}",
+            fontSize = 21.sp,
             fontFamily = FontFamily.Monospace
         )
     }
