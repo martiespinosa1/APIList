@@ -11,11 +11,24 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -23,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -38,9 +52,22 @@ import com.example.apilist.model.Data
 import com.example.apilist.model.PokemonList
 import com.example.apilist.navigation.Routes
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun List(navController: NavController, myViewModel: ViewModel) {
-   MyRecyclerView(myViewModel = myViewModel, navController = navController)
+    Scaffold(
+        topBar = { MyTopAppBar1(navController) },
+        bottomBar = { MyBottomBar(navController = navController, bottomNavigationItems = bottomNavigationItems) },
+        content = { paddingValues ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                MyRecyclerView(myViewModel = myViewModel, navController = navController)
+            }
+        }
+    )
 }
 
 
@@ -49,6 +76,7 @@ fun MyRecyclerView(myViewModel: ViewModel, navController: NavController) {
     val showLoading: Boolean by myViewModel.loading.observeAsState(true)
     val cards: PokemonList by myViewModel.characters.observeAsState(PokemonList(0, emptyList(), 0, 0, 0))
     myViewModel.getCharacters()
+
     if(showLoading){
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -97,5 +125,68 @@ fun CharacterItem(character: Data, navController: NavController, myViewModel: Vi
                 fontFamily = FontFamily.Monospace
             )
         }
+    }
+}
+
+
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTopAppBar1(navController: NavController) {
+    TopAppBar(
+        title = { Text(text = "Card List") },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Color.Black,
+            titleContentColor = Color.White,
+            navigationIconContentColor = Color.White,
+            actionIconContentColor = Color.White
+        ),
+        actions = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
+            }
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Menu")
+            }
+        }
+    )
+}
+
+
+
+sealed class BottomNavigationScreens(val route: String, val icon: ImageVector, val label: String) {
+    object Home:BottomNavigationScreens(Routes.List.route, Icons.Filled.Home, "Home")
+    object Favorite:BottomNavigationScreens(Routes.List.route, Icons.Filled.Favorite, "Favorite")
+}
+
+val bottomNavigationItems = listOf(
+    BottomNavigationScreens.Home,
+    BottomNavigationScreens.Favorite
+)
+
+@Composable
+fun MyBottomBar(navController: NavController, bottomNavigationItems: List<BottomNavigationScreens>) {
+    BottomNavigation(
+        backgroundColor = Color(46, 46, 46, 255),
+        contentColor = Color.White
+    ) {
+        BottomNavigationItem(
+            icon = { Icon(Icons.Filled.Home, contentDescription = "Home", tint = Color.White) },
+            //label = { Text(text ="Home") },
+            selected = true,
+            onClick = { /*TODO*/ },
+            selectedContentColor = Color.White,
+            unselectedContentColor = Color.White
+        )
+        BottomNavigationItem(
+            icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favs", tint = Color.White) },
+            //label = { Text("Favourites") },
+            selected = true,
+            onClick = { /*TODO*/ },
+            selectedContentColor = Color.White,
+            unselectedContentColor = Color.White
+        )
     }
 }
