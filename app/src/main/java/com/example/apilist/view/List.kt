@@ -138,7 +138,7 @@ fun MyTopAppBar1(navController: NavController) {
     TopAppBar(
         title = { Text(text = "Card List") },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color.Black,
+            containerColor = Color.DarkGray,
             titleContentColor = Color.White,
             navigationIconContentColor = Color.White,
             actionIconContentColor = Color.White
@@ -169,7 +169,7 @@ val bottomNavigationItems = listOf(
 @Composable
 fun MyBottomBar(navController: NavController, bottomNavigationItems: List<BottomNavigationScreens>) {
     BottomNavigation(
-        backgroundColor = Color(46, 46, 46, 255),
+        backgroundColor = Color.DarkGray,
         contentColor = Color.White
     ) {
         BottomNavigationItem(

@@ -121,7 +121,7 @@ fun MyTopAppBar2(navController: NavController) {
     TopAppBar(
         title = { Text(text = "Card List") },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color.Black,
+            containerColor = Color.DarkGray,
             titleContentColor = Color.White,
             navigationIconContentColor = Color.White,
             actionIconContentColor = Color.White
