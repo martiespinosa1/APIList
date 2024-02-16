@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MoreVert
@@ -34,19 +33,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.apilist.MainActivity
 import com.example.apilist.ViewModel
 import com.example.apilist.model.Data
 import com.example.apilist.model.PokemonList
@@ -55,22 +51,11 @@ import com.example.apilist.navigation.Routes
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun List(navController: NavController, myViewModel: ViewModel) {
-    Scaffold(
-        topBar = { MyTopAppBar1(navController) },
-        bottomBar = { MyBottomBar(navController = navController, bottomNavigationItems = bottomNavigationItems) },
-        content = { paddingValues ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            ) {
-                MyRecyclerView(myViewModel = myViewModel, navController = navController)
-            }
-        }
-    )
+    MyRecyclerView(myViewModel = myViewModel, navController = navController)
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyRecyclerView(myViewModel: ViewModel, navController: NavController) {
     val showLoading: Boolean by myViewModel.loading.observeAsState(true)
@@ -89,10 +74,23 @@ fun MyRecyclerView(myViewModel: ViewModel, navController: NavController) {
         }
     }
     else{
-        LazyColumn() {
-            items(cards.data) { card ->
-                CharacterItem(character = card, navController = navController, myViewModel = myViewModel) }
-        }
+        Scaffold(
+            topBar = { MyTopAppBar1(navController) },
+            bottomBar = { MyBottomBar(navController = navController, bottomNavigationItems = bottomNavigationItems) },
+            content = { paddingValues ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    LazyColumn() {
+                        items(cards.data) { card ->
+                            CharacterItem(character = card, navController = navController, myViewModel = myViewModel) }
+                    }
+                }
+            }
+        )
+
     }
 }
 
@@ -136,7 +134,7 @@ fun CharacterItem(character: Data, navController: NavController, myViewModel: Vi
 @Composable
 fun MyTopAppBar1(navController: NavController) {
     TopAppBar(
-        title = { Text(text = "Card List") },
+        title = { Text(text = "Home screen", fontFamily = FontFamily.Monospace) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Color.DarkGray,
             titleContentColor = Color.White,
