@@ -1,11 +1,12 @@
 package com.example.apilist
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.apilist.api.Repository
-import com.example.apilist.model.Data
-import com.example.apilist.model.Images
 import com.example.apilist.model.Pokemon
 import com.example.apilist.model.PokemonList
 import kotlinx.coroutines.CoroutineScope
@@ -16,6 +17,8 @@ import kotlinx.coroutines.withContext
 class ViewModel: ViewModel() {
 
     var id : String = ""
+
+    var isFavorite by mutableStateOf(false)
 
     private val repository = Repository()
     private val _loading = MutableLiveData(true)

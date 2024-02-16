@@ -3,11 +3,14 @@ package com.example.apilist.view
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,6 +21,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,36 +63,65 @@ fun Detail(navController: NavController, myViewModel: ViewModel) {
                     model = poke.data.images.large,
                     contentDescription = "Card Image",
                     contentScale = ContentScale.FillHeight,
-                    modifier = Modifier.size(360.dp).padding(top = 50.dp)
+                    modifier = Modifier
+                        .size(360.dp)
+                        .padding(top = 25.dp)
                 )
-                Text(
-                    text = poke.data.name,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Monospace,
-                    modifier = Modifier.padding(25.dp)
-                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(top = 15.dp)
+                ) {
+                    Text(
+                        text = poke.data.name,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Monospace
+                    )
+
+                    IconButton(onClick = { myViewModel.isFavorite = !myViewModel.isFavorite }) {
+                        Icon(
+                            imageVector = if (myViewModel.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                            contentDescription = "Heart",
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                    }
+                }
+
                 Box(modifier = Modifier.padding(top = 25.dp)) {
                     Column(
                         verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.Start
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier.padding(start = 50.dp, end = 50.dp)
                     )
                     {
                         Text(
-                            text = "${poke.data.flavorText}",
-                            fontSize = 20.sp,
+                            text = "${poke.data.flavorText}" ?: "",
+                            fontSize = 15.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                         Text(
                             text = "HP: ${poke.data.hp}",
-                            fontSize = 20.sp,
+                            fontSize = 18.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                         Text(
                             text = "Rarity: ${poke.data.rarity}",
-                            fontSize = 20.sp,
+                            fontSize = 18.sp,
+                            fontFamily = FontFamily.Monospace,
+                            modifier = Modifier.padding(bottom = 10.dp)
+                        )
+                        Text(
+                            text = "Evolves from: ${poke.data.evolvesFrom}" ?: "",
+                            fontSize = 18.sp,
+                            fontFamily = FontFamily.Monospace,
+                            modifier = Modifier.padding(bottom = 10.dp)
+                        )
+                        Text(
+                            text = "Evolves to: ${poke.data.evolvesTo}" ?: "",
+                            fontSize = 18.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
