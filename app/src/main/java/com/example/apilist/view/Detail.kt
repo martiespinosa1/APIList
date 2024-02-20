@@ -36,6 +36,7 @@ import com.example.apilist.APIViewModel
 import com.example.apilist.model.Data
 import com.example.apilist.model.Images
 import com.example.apilist.model.Pokemon
+import com.example.apilist.model.PokemonDao
 import com.example.apilist.navigation.Routes
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
@@ -75,7 +76,10 @@ fun Detail(navController: NavController, myAPIViewModel: APIViewModel) {
                         fontFamily = FontFamily.Monospace
                     )
 
-                    IconButton(onClick = { myAPIViewModel.isFavorite.value = true }) {
+                    IconButton(onClick = {
+                        myAPIViewModel.isFavorite.value = !myAPIViewModel.isFavorite.value!!
+
+                    }) {
                         Icon(
                             imageVector = if (myAPIViewModel.isFavorite.value == true) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                             contentDescription = "Heart",
