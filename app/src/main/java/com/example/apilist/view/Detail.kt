@@ -21,10 +21,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.apilist.ViewModel
+import com.example.apilist.APIViewModel
 import com.example.apilist.model.Data
 import com.example.apilist.model.Images
 import com.example.apilist.model.Pokemon
@@ -44,9 +40,9 @@ import com.example.apilist.navigation.Routes
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun Detail(navController: NavController, myViewModel: ViewModel) {
-    val poke: Pokemon by myViewModel.pokemon.observeAsState(Pokemon(Data(emptyList(), emptyList(), 0, "", emptyList(), "", "", "", Images("",""), "", "", emptyList(), "", "", "", emptyList(), emptyList(), emptyList(), emptyList(), "", emptyList(), emptyList())))
-    myViewModel.getCharacterById()
+fun Detail(navController: NavController, myAPIViewModel: APIViewModel) {
+    val poke: Pokemon by myAPIViewModel.pokemon.observeAsState(Pokemon(Data(emptyList(), emptyList(), 0, "", emptyList(), "", "", "", Images("",""), "", "", emptyList(), "", "", "", emptyList(), emptyList(), emptyList(), emptyList(), "", emptyList(), emptyList())))
+    myAPIViewModel.getCharacterById()
 
     Scaffold(
         topBar = { MyTopAppBar2(navController) },
@@ -79,9 +75,9 @@ fun Detail(navController: NavController, myViewModel: ViewModel) {
                         fontFamily = FontFamily.Monospace
                     )
 
-                    IconButton(onClick = { myViewModel.isFavorite = !myViewModel.isFavorite }) {
+                    IconButton(onClick = { myAPIViewModel.isFavorite.value = true }) {
                         Icon(
-                            imageVector = if (myViewModel.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                            imageVector = if (myAPIViewModel.isFavorite.value == true) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                             contentDescription = "Heart",
                             modifier = Modifier.padding(start = 8.dp)
                         )
@@ -96,31 +92,32 @@ fun Detail(navController: NavController, myViewModel: ViewModel) {
                     )
                     {
                         Text(
-                            text = "${poke.data.flavorText}" ?: "",
+                            text = "${poke.data.flavorText ?: ""}",
                             fontSize = 15.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                         Text(
-                            text = "HP: ${poke.data.hp}",
+                            text = "HP: ${poke.data.hp ?: ""}",
                             fontSize = 18.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                         Text(
-                            text = "Rarity: ${poke.data.rarity}",
+                            text = "Rarity: ${poke.data.rarity ?: ""}",
+                            fontSize = 18.sp,
+                            fontFamily = FontFamily.Monospace,
+                            modifier = Modifier.padding(bottom = 10.dp)
+                        )
+                        val valueText = poke.data.evolvesFrom ?: "Default"
+                        Text(
+                            text = "Evolves from: $valueText",
                             fontSize = 18.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                         Text(
-                            text = "Evolves from: ${poke.data.evolvesFrom}" ?: "",
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily.Monospace,
-                            modifier = Modifier.padding(bottom = 10.dp)
-                        )
-                        Text(
-                            text = "Evolves to: ${poke.data.evolvesTo}" ?: "",
+                            text = "Evolves to: ${poke.data.evolvesTo ?: ""}",
                             fontSize = 18.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)

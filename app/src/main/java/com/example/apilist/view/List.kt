@@ -43,24 +43,24 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.apilist.ViewModel
+import com.example.apilist.APIViewModel
 import com.example.apilist.model.Data
 import com.example.apilist.model.PokemonList
 import com.example.apilist.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun List(navController: NavController, myViewModel: ViewModel) {
-    MyRecyclerView(myViewModel = myViewModel, navController = navController)
+fun List(navController: NavController, myAPIViewModel: APIViewModel) {
+    MyRecyclerView(myAPIViewModel = myAPIViewModel, navController = navController)
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyRecyclerView(myViewModel: ViewModel, navController: NavController) {
-    val showLoading: Boolean by myViewModel.loading.observeAsState(true)
-    val cards: PokemonList by myViewModel.characters.observeAsState(PokemonList(0, emptyList(), 0, 0, 0))
-    myViewModel.getCharacters()
+fun MyRecyclerView(myAPIViewModel: APIViewModel, navController: NavController) {
+    val showLoading: Boolean by myAPIViewModel.loading.observeAsState(true)
+    val cards: PokemonList by myAPIViewModel.characters.observeAsState(PokemonList(0, emptyList(), 0, 0, 0))
+    myAPIViewModel.getCharacters()
 
     if(showLoading){
         Box(
@@ -85,7 +85,7 @@ fun MyRecyclerView(myViewModel: ViewModel, navController: NavController) {
                 ) {
                     LazyColumn() {
                         items(cards.data) { card ->
-                            CharacterItem(character = card, navController = navController, myViewModel = myViewModel) }
+                            CharacterItem(character = card, navController = navController, myAPIViewModel = myAPIViewModel) }
                     }
                 }
             }
@@ -97,10 +97,10 @@ fun MyRecyclerView(myViewModel: ViewModel, navController: NavController) {
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterItem(character: Data, navController: NavController, myViewModel: ViewModel) {
+fun CharacterItem(character: Data, navController: NavController, myAPIViewModel: APIViewModel) {
     Card(
         onClick = {
-            myViewModel.id = character.id
+            myAPIViewModel.id = character.id
             navController.navigate(Routes.Detail.route)
         },
         border = BorderStroke(2.dp, Color.LightGray),
