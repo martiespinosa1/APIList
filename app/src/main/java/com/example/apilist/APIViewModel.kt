@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.apilist.api.Repository
+import com.example.apilist.model.Data
 import com.example.apilist.model.Pokemon
-import com.example.apilist.model.PokemonEntity
 import com.example.apilist.model.PokemonList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ class APIViewModel: ViewModel() {
     val characters = _characters
     private val _isFavorite = MutableLiveData(false)
     val isFavorite = _isFavorite
-    private val _favorites = MutableLiveData<MutableList<PokemonEntity>>()
+    private val _favorites = MutableLiveData<MutableList<Data>>()
     val favorites = _favorites
     
     private var _pokemon = MutableLiveData<Pokemon>()
@@ -72,7 +72,7 @@ class APIViewModel: ViewModel() {
         }
     }
 
-    fun isFavorite(pokemon: PokemonEntity) {
+    fun isFavorite(pokemon: Data) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.isFavorite(pokemon)
             withContext(Dispatchers.Main) {
@@ -81,13 +81,13 @@ class APIViewModel: ViewModel() {
         }
     }
 
-    fun saveAsFavorite(pokemon: PokemonEntity) {
+    fun saveAsFavorite(pokemon: Data) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.saveAsFavorite(pokemon)
         }
     }
 
-    fun deleteFavorite(pokemon: PokemonEntity) {
+    fun deleteFavorite(pokemon: Data) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.deleteFavorite(pokemon)
         }

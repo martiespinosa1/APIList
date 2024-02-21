@@ -42,7 +42,7 @@ import com.example.apilist.navigation.Routes
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun Detail(navController: NavController, myAPIViewModel: APIViewModel) {
-    val poke: Pokemon by myAPIViewModel.pokemon.observeAsState(Pokemon(Data(emptyList(), emptyList(), 0, "", emptyList(), "", "", "", Images("",""), "", "", emptyList(), "", "", "", emptyList(), emptyList(), emptyList(), emptyList(), "", emptyList(), emptyList())))
+    val poke: Pokemon by myAPIViewModel.pokemon.observeAsState(Pokemon(Data(0, "", emptyList(), "", "", "", Images("",""), "", "", "", "", emptyList(), emptyList(), emptyList(), "", emptyList())))
     myAPIViewModel.getCharacterById()
 
     Scaffold(
@@ -113,7 +113,7 @@ fun Detail(navController: NavController, myAPIViewModel: APIViewModel) {
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
-                        val valueText = poke.data.evolvesFrom ?: "Default"
+                        val valueText = poke.data.evolvesFrom ?: ""
                         Text(
                             text = "Evolves from: $valueText",
                             fontSize = 18.sp,
