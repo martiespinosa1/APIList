@@ -144,11 +144,11 @@ fun MyBottomBar(navController: NavController, bottomNavigationItems: List<Bottom
         contentColor = Color.White
     ) {
         BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Home, contentDescription = "Home", tint = Color.White) },
+            icon = { Icon(Icons.Filled.Home, contentDescription = "Home", tint = if (navController.currentDestination?.route == Routes.List.route) Color.Green else Color.White) },
             //label = { Text(text ="Home") },
             selected = true,
             onClick = { navController.navigate(Routes.List.route) },
-            selectedContentColor = Color.White,
+            selectedContentColor = Color.Green,
             unselectedContentColor = Color.White
         )
         BottomNavigationItem(
@@ -156,17 +156,11 @@ fun MyBottomBar(navController: NavController, bottomNavigationItems: List<Bottom
             //label = { Text("Favourites") },
             selected = true,
             onClick = { navController.navigate(Routes.Favs.route) },
-            selectedContentColor = Color.White,
+            selectedContentColor = Color.Red,
             unselectedContentColor = Color.White
         )
     }
 }
-
-
-
-
-
-
 
 
 

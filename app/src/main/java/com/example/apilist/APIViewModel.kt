@@ -159,6 +159,29 @@ class APIViewModel: ViewModel() {
     }
 
 
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun MyTopAppBarFavs(navController: NavController) {
+        TopAppBar(
+            title = { Text(text = "Favs screen", fontFamily = FontFamily.Monospace) },
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = Color.DarkGray,
+                titleContentColor = Color.White,
+                navigationIconContentColor = Color.White,
+                actionIconContentColor = Color.White
+            ),
+            actions = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Menu")
+                }
+            }
+        )
+    }
+
+
 
 
 }

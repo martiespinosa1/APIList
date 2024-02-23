@@ -77,7 +77,7 @@ fun MyRecyclerViewFavs(myAPIViewModel: APIViewModel, navController: NavControlle
     }
     else{
         Scaffold(
-            topBar = { myAPIViewModel.MyTopAppBar1(navController) },
+            topBar = { myAPIViewModel.MyTopAppBarFavs(navController) },
             bottomBar = { MyBottomBarFavs(navController = navController, bottomNavigationItems = bottomNavigationItemsFavs) },
             content = { paddingValues ->
                 Box(
@@ -154,11 +154,11 @@ fun MyBottomBarFavs(navController: NavController, bottomNavigationItems: List<Bo
             unselectedContentColor = Color.White
         )
         BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favs", tint = Color.White) },
+            icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favs", tint = Color.Red) },
             //label = { Text("Favourites") },
             selected = true,
             onClick = { navController.navigate(Routes.Favs.route) },
-            selectedContentColor = Color.White,
+            selectedContentColor = Color.Green,
             unselectedContentColor = Color.White
         )
     }
