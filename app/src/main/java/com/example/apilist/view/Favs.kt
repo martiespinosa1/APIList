@@ -78,7 +78,7 @@ fun MyRecyclerViewFavs(myAPIViewModel: APIViewModel, navController: NavControlle
     else{
         Scaffold(
             topBar = { myAPIViewModel.MyTopAppBarFavs(navController) },
-            bottomBar = { MyBottomBarFavs(navController = navController, bottomNavigationItems = bottomNavigationItemsFavs) },
+            bottomBar = { myAPIViewModel.MyBottomBar(navController = navController, bottomNavigationItems = myAPIViewModel.bottomNavigationItems) },
             content = { paddingValues ->
                 Box(
                     modifier = Modifier
@@ -127,51 +127,6 @@ fun CharacterItemFavs(character: Data, navController: NavController, myAPIViewMo
         }
     }
 }
-
-
-sealed class BottomNavigationScreensFavs(val route: String, val icon: ImageVector, val label: String) {
-    object Home:BottomNavigationScreensFavs(Routes.List.route, Icons.Filled.Home, "Home")
-    object Favorite:BottomNavigationScreensFavs(Routes.List.route, Icons.Filled.Favorite, "Favorite")
-}
-
-val bottomNavigationItemsFavs = listOf(
-    BottomNavigationScreens.Home,
-    BottomNavigationScreens.Favorite
-)
-
-@Composable
-fun MyBottomBarFavs(navController: NavController, bottomNavigationItems: List<BottomNavigationScreens>) {
-    BottomNavigation(
-        backgroundColor = Color.DarkGray,
-        contentColor = Color.White
-    ) {
-        BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Home, contentDescription = "Home", tint = Color.White) },
-            //label = { Text(text ="Home") },
-            selected = true,
-            onClick = { navController.navigate(Routes.List.route) },
-            selectedContentColor = Color.White,
-            unselectedContentColor = Color.White
-        )
-        BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favs", tint = Color.Red) },
-            //label = { Text("Favourites") },
-            selected = true,
-            onClick = { navController.navigate(Routes.Favs.route) },
-            selectedContentColor = Color.Green,
-            unselectedContentColor = Color.White
-        )
-    }
-}
-
-
-
-
-
-
-
-
-
 
 
 

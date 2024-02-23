@@ -76,7 +76,7 @@ fun MyRecyclerView(myAPIViewModel: APIViewModel, navController: NavController) {
     else{
         Scaffold(
             topBar = { myAPIViewModel.MyTopAppBar1(navController) },
-            bottomBar = { MyBottomBar(navController = navController, bottomNavigationItems = bottomNavigationItems) },
+            bottomBar = { myAPIViewModel.MyBottomBar(navController = navController, bottomNavigationItems = myAPIViewModel.bottomNavigationItems) },
             content = { paddingValues ->
                 Box(
                     modifier = Modifier
@@ -125,45 +125,6 @@ fun CharacterItem(character: Data, navController: NavController, myAPIViewModel:
         }
     }
 }
-
-
-sealed class BottomNavigationScreens(val route: String, val icon: ImageVector, val label: String) {
-    object Home:BottomNavigationScreens(Routes.List.route, Icons.Filled.Home, "Home")
-    object Favorite:BottomNavigationScreens(Routes.List.route, Icons.Filled.Favorite, "Favorite")
-}
-
-val bottomNavigationItems = listOf(
-    BottomNavigationScreens.Home,
-    BottomNavigationScreens.Favorite
-)
-
-@Composable
-fun MyBottomBar(navController: NavController, bottomNavigationItems: List<BottomNavigationScreens>) {
-    BottomNavigation(
-        backgroundColor = Color.DarkGray,
-        contentColor = Color.White
-    ) {
-        BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Home, contentDescription = "Home", tint = if (navController.currentDestination?.route == Routes.List.route) Color.Green else Color.White) },
-            //label = { Text(text ="Home") },
-            selected = true,
-            onClick = { navController.navigate(Routes.List.route) },
-            selectedContentColor = Color.Green,
-            unselectedContentColor = Color.White
-        )
-        BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favs", tint = Color.White) },
-            //label = { Text("Favourites") },
-            selected = true,
-            onClick = { navController.navigate(Routes.Favs.route) },
-            selectedContentColor = Color.Red,
-            unselectedContentColor = Color.White
-        )
-    }
-}
-
-
-
 
 
 
