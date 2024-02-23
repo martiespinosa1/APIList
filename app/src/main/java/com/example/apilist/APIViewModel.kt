@@ -1,12 +1,32 @@
 package com.example.apilist
 
 import android.util.Log
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontFamily
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import com.example.apilist.api.Repository
 import com.example.apilist.model.Data
 import com.example.apilist.model.Pokemon
 import com.example.apilist.model.PokemonList
+import com.example.apilist.navigation.Routes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -84,12 +104,61 @@ class APIViewModel: ViewModel() {
     fun saveAsFavorite(pokemon: Data) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.saveAsFavorite(pokemon)
+            _isFavorite.postValue(true)
         }
     }
 
     fun deleteFavorite(pokemon: Data) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.deleteFavorite(pokemon)
+            _isFavorite.postValue(false)
         }
     }
+
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun MyTopAppBar1(navController: NavController) {
+        TopAppBar(
+            title = { Text(text = "Home screen", fontFamily = FontFamily.Monospace) },
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = Color.DarkGray,
+                titleContentColor = Color.White,
+                navigationIconContentColor = Color.White,
+                actionIconContentColor = Color.White
+            ),
+            actions = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Menu")
+                }
+            }
+        )
+    }
+
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun MyTopAppBar2(navController: NavController) {
+        TopAppBar(
+            title = { Text(text = "Detail screen", fontFamily = FontFamily.Monospace) },
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = Color.DarkGray,
+                titleContentColor = Color.White,
+                navigationIconContentColor = Color.White,
+                actionIconContentColor = Color.White
+            ),
+            navigationIcon = {
+                IconButton(onClick = { navController.navigate(Routes.List.route) }) {
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                }
+            }
+        )
+    }
+
+
+
+
 }

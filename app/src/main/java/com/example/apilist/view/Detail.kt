@@ -1,5 +1,6 @@
 package com.example.apilist.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,9 +45,12 @@ import com.example.apilist.navigation.Routes
 fun Detail(navController: NavController, myAPIViewModel: APIViewModel) {
     val poke: Pokemon by myAPIViewModel.pokemon.observeAsState(Pokemon(Data(0, "", emptyList(), "", "", "", Images("",""), "", "", "", "", emptyList(), emptyList(), emptyList(), "", emptyList())))
     myAPIViewModel.getCharacterById()
+    val fav by myAPIViewModel.isFavorite.observeAsState(false)
+    myAPIViewModel.isFavorite(poke.data)
+    var icon = if (fav) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
 
     Scaffold(
-        topBar = { MyTopAppBar2(navController) },
+        topBar = { myAPIViewModel.MyTopAppBar2(navController) },
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -77,13 +81,20 @@ fun Detail(navController: NavController, myAPIViewModel: APIViewModel) {
                     )
 
                     IconButton(onClick = {
-                        myAPIViewModel.isFavorite.value = !myAPIViewModel.isFavorite.value!!
+                        myAPIViewModel.isFavorite(poke.data)
+                        if (!fav) {
+                            myAPIViewModel.saveAsFavorite(poke.data)
+                        } else {
+                            myAPIViewModel.deleteFavorite(poke.data)
+                        }
 
                     }) {
                         Icon(
-                            imageVector = if (myAPIViewModel.isFavorite.value == true) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                            imageVector = icon,
                             contentDescription = "Heart",
-                            modifier = Modifier.padding(start = 8.dp)
+                            modifier = Modifier
+                                .size(45.dp)
+                                .padding(start = 8.dp)
                         )
                     }
                 }
@@ -137,23 +148,6 @@ fun Detail(navController: NavController, myAPIViewModel: APIViewModel) {
 
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MyTopAppBar2(navController: NavController) {
-    TopAppBar(
-        title = { Text(text = "Detail screen", fontFamily = FontFamily.Monospace) },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color.DarkGray,
-            titleContentColor = Color.White,
-            navigationIconContentColor = Color.White,
-            actionIconContentColor = Color.White
-        ),
-        navigationIcon = {
-            IconButton(onClick = { navController.navigate(Routes.List.route) }) {
-                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-            }
-        }
-    )
-}
+
 
 

@@ -4,12 +4,20 @@ import androidx.room.TypeConverter
 
 class PokemonConverters {
     @TypeConverter
-    fun fromStringListToString(list: List<String>): String {
-        return list.joinToString(",")
+    fun fromStringListToString(list: List<String>?): String {
+        if (list != null) {
+            return list.joinToString(",")
+        } else {
+            return ""
+        }
     }
     @TypeConverter
     fun fromStringToStringList(string: String): List<String> {
-        return string.split(",")
+        if (string != null) {
+            return string.split(",")
+        } else {
+            return emptyList()
+        }
     }
 
 
@@ -20,7 +28,7 @@ class PokemonConverters {
     @TypeConverter
     fun fromStringToImage(string: String): Images {
         val large = string.split(",")[0]
-        val small = string.split(", ")[1]
+        val small = string.split(",")[1]
         return Images(large,small)
     }
 

@@ -50,14 +50,16 @@ import com.example.apilist.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun List(navController: NavController, myAPIViewModel: APIViewModel) {
-    MyRecyclerView(myAPIViewModel = myAPIViewModel, navController = navController)
+fun Favs(navController: NavController, myAPIViewModel: APIViewModel) {
+    myAPIViewModel.getFavorites()
+
+    MyRecyclerViewFavs(myAPIViewModel = myAPIViewModel, navController = navController)
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyRecyclerView(myAPIViewModel: APIViewModel, navController: NavController) {
+fun MyRecyclerViewFavs(myAPIViewModel: APIViewModel, navController: NavController) {
     val showLoading: Boolean by myAPIViewModel.loading.observeAsState(true)
     val cards: PokemonList by myAPIViewModel.characters.observeAsState(PokemonList(0, emptyList(), 0, 0, 0))
     myAPIViewModel.getCharacters()
@@ -76,7 +78,7 @@ fun MyRecyclerView(myAPIViewModel: APIViewModel, navController: NavController) {
     else{
         Scaffold(
             topBar = { myAPIViewModel.MyTopAppBar1(navController) },
-            bottomBar = { MyBottomBar(navController = navController, bottomNavigationItems = bottomNavigationItems) },
+            bottomBar = { MyBottomBarFavs(navController = navController, bottomNavigationItems = bottomNavigationItemsFavs) },
             content = { paddingValues ->
                 Box(
                     modifier = Modifier
@@ -84,8 +86,8 @@ fun MyRecyclerView(myAPIViewModel: APIViewModel, navController: NavController) {
                         .padding(paddingValues)
                 ) {
                     LazyColumn() {
-                        items(cards.data) { card ->
-                            CharacterItem(character = card, navController = navController, myAPIViewModel = myAPIViewModel) }
+                        items(myAPIViewModel.favorites.value ?: emptyList()) { fav ->
+                            CharacterItemFavs(character = fav, navController = navController, myAPIViewModel = myAPIViewModel) }
                     }
                 }
             }
@@ -97,7 +99,7 @@ fun MyRecyclerView(myAPIViewModel: APIViewModel, navController: NavController) {
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterItem(character: Data, navController: NavController, myAPIViewModel: APIViewModel) {
+fun CharacterItemFavs(character: Data, navController: NavController, myAPIViewModel: APIViewModel) {
     Card(
         onClick = {
             myAPIViewModel.id = character.id
@@ -127,18 +129,18 @@ fun CharacterItem(character: Data, navController: NavController, myAPIViewModel:
 }
 
 
-sealed class BottomNavigationScreens(val route: String, val icon: ImageVector, val label: String) {
-    object Home:BottomNavigationScreens(Routes.List.route, Icons.Filled.Home, "Home")
-    object Favorite:BottomNavigationScreens(Routes.List.route, Icons.Filled.Favorite, "Favorite")
+sealed class BottomNavigationScreensFavs(val route: String, val icon: ImageVector, val label: String) {
+    object Home:BottomNavigationScreensFavs(Routes.List.route, Icons.Filled.Home, "Home")
+    object Favorite:BottomNavigationScreensFavs(Routes.List.route, Icons.Filled.Favorite, "Favorite")
 }
 
-val bottomNavigationItems = listOf(
+val bottomNavigationItemsFavs = listOf(
     BottomNavigationScreens.Home,
     BottomNavigationScreens.Favorite
 )
 
 @Composable
-fun MyBottomBar(navController: NavController, bottomNavigationItems: List<BottomNavigationScreens>) {
+fun MyBottomBarFavs(navController: NavController, bottomNavigationItems: List<BottomNavigationScreens>) {
     BottomNavigation(
         backgroundColor = Color.DarkGray,
         contentColor = Color.White

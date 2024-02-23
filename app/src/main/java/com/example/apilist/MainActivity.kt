@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apilist.view.Detail
+import com.example.apilist.view.Favs
 import com.example.apilist.view.List
 
 
@@ -36,6 +37,7 @@ class MainActivity : ComponentActivity() {
                         composable(Routes.Launch.route) { LaunchAnimation(navigationController) }
                         composable(Routes.List.route) { List(navigationController, myAPIViewModel) }
                         composable(Routes.Detail.route) { Detail(navigationController, myAPIViewModel) }
+                        composable(Routes.Favs.route) { Favs(navigationController, myAPIViewModel) }
                     }
 
                 }
