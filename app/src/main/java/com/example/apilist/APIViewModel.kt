@@ -48,6 +48,10 @@ class APIViewModel: ViewModel() {
     private var _pokemon = MutableLiveData<Pokemon>()
     var pokemon = _pokemon
 
+    // para que si entro a la detail screen de un pokemon desde la pantalla favs que al volver atras vaya a la pantalla favs y no a list
+    private val _lastScreen = MutableLiveData("list")
+    val lastScreen = _lastScreen
+
 
 
     fun getCharacters(){
@@ -141,7 +145,7 @@ class APIViewModel: ViewModel() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun MyTopAppBar2(navController: NavController) {
+    fun MyTopAppBarDetail(navController: NavController) {
         TopAppBar(
             title = { Text(text = "Detail screen", fontFamily = FontFamily.Monospace) },
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -151,7 +155,10 @@ class APIViewModel: ViewModel() {
                 actionIconContentColor = Color.White
             ),
             navigationIcon = {
-                IconButton(onClick = { navController.navigate(Routes.List.route) }) {
+                IconButton(onClick = {
+                    if (_lastScreen.value == "list") navController.navigate(Routes.List.route)
+                    else navController.navigate(Routes.Favs.route)
+                }) {
                     Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                 }
             }
@@ -205,7 +212,10 @@ class APIViewModel: ViewModel() {
                 icon = { Icon(Icons.Filled.Home, contentDescription = "Home", tint = if (navController.currentDestination?.route == Routes.List.route) Color.Green else Color.White) },
                 //label = { Text(text ="Home") },
                 selected = true,
-                onClick = { navController.navigate(Routes.List.route) },
+                onClick = {
+                    _lastScreen.value = "list"
+                    navController.navigate(Routes.List.route)
+                },
                 selectedContentColor = Color.Green,
                 unselectedContentColor = Color.White
             )
@@ -213,7 +223,10 @@ class APIViewModel: ViewModel() {
                 icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favs", tint = if (navController.currentDestination?.route == Routes.Favs.route) Color.Red else Color.White) },
                 //label = { Text("Favourites") },
                 selected = true,
-                onClick = { navController.navigate(Routes.Favs.route) },
+                onClick = {
+                    _lastScreen.value = "favs"
+                    navController.navigate(Routes.Favs.route)
+                },
                 selectedContentColor = Color.Red,
                 unselectedContentColor = Color.White
             )

@@ -43,7 +43,7 @@ fun Detail(navController: NavController, myAPIViewModel: APIViewModel) {
     var favIcon = if (fav) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
 
     Scaffold(
-        topBar = { myAPIViewModel.MyTopAppBar2(navController) },
+        topBar = { myAPIViewModel.MyTopAppBarDetail(navController) },
         content = { paddingValues ->
             Column(
                 modifier = Modifier
