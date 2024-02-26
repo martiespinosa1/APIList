@@ -68,7 +68,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
     implementation("androidx.compose.material:material:1.6.1")
-    implementation("androidx.room:room-ktx:<version>")
+    implementation("androidx.room:room-ktx:1.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")

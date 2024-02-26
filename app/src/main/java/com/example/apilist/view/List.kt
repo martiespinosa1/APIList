@@ -3,6 +3,7 @@ package com.example.apilist.view
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -41,8 +43,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.room.util.query
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
 import com.example.apilist.APIViewModel
 import com.example.apilist.model.Data
 import com.example.apilist.model.PokemonList
@@ -126,5 +130,27 @@ fun CharacterItem(character: Data, navController: NavController, myAPIViewModel:
     }
 }
 
+
+
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun MySearchBar(myViewModel: APIViewModel) {
+//    val searchText by myViewModel.searchText.observeAsState("")
+//    SearchBar(
+//        query = searchText,
+//        onQueryChange = { myViewModel.onSearchTextChange(it) },
+//        onSearch = { myViewModel.onSearchTextChange(it) },
+//        active = true,
+//        leadingIcon = { Icon(imageVector = Icons.Filled.Search, contentDescription = "Search") },
+//        placeholder = { Text("What are you looking for") },
+//        onActiveChange = {},
+//        modifier = Modifier
+//            .fillMaxHeight(0.1f)
+//            .clip(CircleShape)
+//    )
+//    {
+//
+//    }
+//}
 
 
