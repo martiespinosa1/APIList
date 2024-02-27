@@ -1,6 +1,7 @@
 package com.example.apilist.view
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MoreVert
@@ -27,14 +30,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -79,8 +88,8 @@ fun MyRecyclerView(myAPIViewModel: APIViewModel, navController: NavController) {
     }
     else{
         Scaffold(
-            topBar = { myAPIViewModel.MyTopAppBar1(navController) },
-            bottomBar = { myAPIViewModel.MyBottomBar(navController = navController, bottomNavigationItems = myAPIViewModel.bottomNavigationItems) },
+            topBar = { MyTopAppBar(navController) },
+            bottomBar = { MyBottomBar(myViewModel = APIViewModel(), navController = navController, bottomNavigationItems = bottomNavigationItems) },
             content = { paddingValues ->
                 Box(
                     modifier = Modifier
@@ -132,25 +141,101 @@ fun CharacterItem(character: Data, navController: NavController, myAPIViewModel:
 
 
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun MySearchBar(myViewModel: APIViewModel) {
-//    val searchText by myViewModel.searchText.observeAsState("")
-//    SearchBar(
-//        query = searchText,
-//        onQueryChange = { myViewModel.onSearchTextChange(it) },
-//        onSearch = { myViewModel.onSearchTextChange(it) },
-//        active = true,
-//        leadingIcon = { Icon(imageVector = Icons.Filled.Search, contentDescription = "Search") },
-//        placeholder = { Text("What are you looking for") },
-//        onActiveChange = {},
-//        modifier = Modifier
-//            .fillMaxHeight(0.1f)
-//            .clip(CircleShape)
-//    )
-//    {
-//
-//    }
-//}
+var showSearchBar by mutableStateOf(false)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTopAppBar(navController: NavController) {
+    TopAppBar(
+        title = { Text(text = "Home screen", fontFamily = FontFamily.Monospace) },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Color.DarkGray,
+            titleContentColor = Color.White,
+            navigationIconContentColor = Color.White,
+            actionIconContentColor = Color.White
+        ),
+        actions = {
+            if (showSearchBar) MySearchBar(myViewModel = APIViewModel())
 
+            IconButton(onClick = { showSearchBar = !showSearchBar }) {
+                Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
+            }
+
+//            IconButton(onClick = { /*TODO*/ }) {
+//                Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Menu")
+//            }
+        }
+    )
+}
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MySearchBar (myViewModel: APIViewModel) {
+    val searchText by myViewModel.searchText.observeAsState("")
+    SearchBar(
+        colors = SearchBarDefaults.colors(Color.DarkGray),
+        query = searchText,
+        onQueryChange = { myViewModel.onSearchTextChange(it) },
+        onSearch = { myViewModel.onSearchTextChange(it) },
+        active = true,
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Filled.Close,
+                contentDescription = "Close",
+                Modifier.clickable { showSearchBar = !showSearchBar }
+            )
+        },
+        placeholder = { Text("What are you looking for?", fontFamily = FontFamily.Monospace, fontSize = 18.sp) },
+        onActiveChange = {},
+        modifier = Modifier
+            .fillMaxHeight(0.1f)
+            .clip(CircleShape)) {
+    }
+}
+
+
+
+sealed class BottomNavigationScreens(val route: String, val icon: ImageVector, val label: String) {
+    object Home:BottomNavigationScreens(Routes.List.route, Icons.Filled.Home, "Home")
+    object Favorite:BottomNavigationScreens(Routes.List.route, Icons.Filled.Favorite, "Favorite")
+}
+
+val bottomNavigationItems = listOf(
+    BottomNavigationScreens.Home,
+    BottomNavigationScreens.Favorite
+)
+
+
+
+@Composable
+fun MyBottomBar(myViewModel: APIViewModel, navController: NavController, bottomNavigationItems: List<BottomNavigationScreens>) {
+    BottomNavigation(
+        backgroundColor = Color.DarkGray,
+        contentColor = Color.White
+    ) {
+        BottomNavigationItem(
+            icon = { Icon(Icons.Filled.Home, contentDescription = "Home", tint = if (navController.currentDestination?.route == Routes.List.route) Color.Green else Color.White) },
+            //label = { Text(text ="Home") },
+            selected = true,
+            onClick = {
+                myViewModel.lastScreen.value = "list"
+                navController.navigate(Routes.List.route)
+            },
+            selectedContentColor = Color.Green,
+            unselectedContentColor = Color.White
+        )
+        BottomNavigationItem(
+            icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favs", tint = if (navController.currentDestination?.route == Routes.Favs.route) Color.Red else Color.White) },
+            //label = { Text("Favourites") },
+            selected = true,
+            onClick = {
+                myViewModel.lastScreen.value = "favs"
+                navController.navigate(Routes.Favs.route)
+            },
+            selectedContentColor = Color.Red,
+            unselectedContentColor = Color.White
+        )
+    }
+}
 

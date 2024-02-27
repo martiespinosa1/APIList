@@ -52,6 +52,9 @@ class APIViewModel: ViewModel() {
     private val _lastScreen = MutableLiveData("list")
     val lastScreen = _lastScreen
 
+    private val _searchText = MutableLiveData<String>()
+    var searchText = _searchText
+
 
 
     fun getCharacters(){
@@ -120,118 +123,20 @@ class APIViewModel: ViewModel() {
     }
 
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun MyTopAppBar1(navController: NavController) {
-        TopAppBar(
-            title = { Text(text = "Home screen", fontFamily = FontFamily.Monospace) },
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                containerColor = Color.DarkGray,
-                titleContentColor = Color.White,
-                navigationIconContentColor = Color.White,
-                actionIconContentColor = Color.White
-            ),
-            actions = {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Menu")
-                }
-            }
-        )
+
+
+
+
+
+    fun onSearchTextChange(text: String) {
+//        _searchText.value = text
+//        val charactersFromAPI = characters.value?.results // Obtener la lista de resultados desde characters.value
+//        val filteredCharacters = charactersFromAPI?.filter { it.name.contains(text, ignoreCase = true) }
+//        // Crear un nuevo PokemonList con los resultados filtrados y establecerlo en _characters
+//        _characters.value = PokemonList().apply { results.addAll(filteredCharacters ?: emptyList()) }
     }
 
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun MyTopAppBarDetail(navController: NavController) {
-        TopAppBar(
-            title = { Text(text = "Detail screen", fontFamily = FontFamily.Monospace) },
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                containerColor = Color.DarkGray,
-                titleContentColor = Color.White,
-                navigationIconContentColor = Color.White,
-                actionIconContentColor = Color.White
-            ),
-            navigationIcon = {
-                IconButton(onClick = {
-                    if (_lastScreen.value == "list") navController.navigate(Routes.List.route)
-                    else navController.navigate(Routes.Favs.route)
-                }) {
-                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                }
-            }
-        )
-    }
-
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun MyTopAppBarFavs(navController: NavController) {
-        TopAppBar(
-            title = { Text(text = "Favs screen", fontFamily = FontFamily.Monospace) },
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                containerColor = Color.DarkGray,
-                titleContentColor = Color.White,
-                navigationIconContentColor = Color.White,
-                actionIconContentColor = Color.White
-            ),
-            actions = {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Menu")
-                }
-            }
-        )
-    }
-
-
-
-    sealed class BottomNavigationScreens(val route: String, val icon: ImageVector, val label: String) {
-        object Home:BottomNavigationScreens(Routes.List.route, Icons.Filled.Home, "Home")
-        object Favorite:BottomNavigationScreens(Routes.List.route, Icons.Filled.Favorite, "Favorite")
-    }
-
-    val bottomNavigationItems = listOf(
-        BottomNavigationScreens.Home,
-        BottomNavigationScreens.Favorite
-    )
-
-
-
-    @Composable
-    fun MyBottomBar(navController: NavController, bottomNavigationItems: List<BottomNavigationScreens>) {
-        BottomNavigation(
-            backgroundColor = Color.DarkGray,
-            contentColor = Color.White
-        ) {
-            BottomNavigationItem(
-                icon = { Icon(Icons.Filled.Home, contentDescription = "Home", tint = if (navController.currentDestination?.route == Routes.List.route) Color.Green else Color.White) },
-                //label = { Text(text ="Home") },
-                selected = true,
-                onClick = {
-                    _lastScreen.value = "list"
-                    navController.navigate(Routes.List.route)
-                },
-                selectedContentColor = Color.Green,
-                unselectedContentColor = Color.White
-            )
-            BottomNavigationItem(
-                icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favs", tint = if (navController.currentDestination?.route == Routes.Favs.route) Color.Red else Color.White) },
-                //label = { Text("Favourites") },
-                selected = true,
-                onClick = {
-                    _lastScreen.value = "favs"
-                    navController.navigate(Routes.Favs.route)
-                },
-                selectedContentColor = Color.Red,
-                unselectedContentColor = Color.White
-            )
-        }
-    }
 
 
 }

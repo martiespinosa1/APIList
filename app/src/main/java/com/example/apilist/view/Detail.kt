@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,11 +16,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -32,18 +36,19 @@ import com.example.apilist.APIViewModel
 import com.example.apilist.model.Data
 import com.example.apilist.model.Images
 import com.example.apilist.model.Pokemon
+import com.example.apilist.navigation.Routes
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun Detail(navController: NavController, myAPIViewModel: APIViewModel) {
-    val poke: Pokemon by myAPIViewModel.pokemon.observeAsState(Pokemon(Data(0, "", emptyList(), "", "", "", Images("",""), "", "", "", "", emptyList(), emptyList(), emptyList(), "", emptyList())))
-    myAPIViewModel.getCharacterById()
-    val fav by myAPIViewModel.isFavorite.observeAsState(false)
-    myAPIViewModel.isFavorite(poke.data)
+fun Detail(navController: NavController, myViewModel: APIViewModel) {
+    val poke: Pokemon by myViewModel.pokemon.observeAsState(Pokemon(Data(0, "", emptyList(), "", "", "", Images("",""), "", "", "", "", emptyList(), emptyList(), emptyList(), "", emptyList())))
+    myViewModel.getCharacterById()
+    val fav by myViewModel.isFavorite.observeAsState(false)
+    myViewModel.isFavorite(poke.data)
     var favIcon = if (fav) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
 
     Scaffold(
-        topBar = { myAPIViewModel.MyTopAppBarDetail(navController) },
+        topBar = { MyTopAppBarDetail(myViewModel, navController) },
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -74,11 +79,11 @@ fun Detail(navController: NavController, myAPIViewModel: APIViewModel) {
                     )
 
                     IconButton(onClick = {
-                        myAPIViewModel.isFavorite(poke.data)
+                        myViewModel.isFavorite(poke.data)
                         if (!fav) {
-                            myAPIViewModel.saveAsFavorite(poke.data)
+                            myViewModel.saveAsFavorite(poke.data)
                         } else {
-                            myAPIViewModel.deleteFavorite(poke.data)
+                            myViewModel.deleteFavorite(poke.data)
                         }
 
                     }) {
@@ -142,5 +147,25 @@ fun Detail(navController: NavController, myAPIViewModel: APIViewModel) {
 
 
 
-
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTopAppBarDetail(myViewModel: APIViewModel, navController: NavController) {
+    TopAppBar(
+        title = { Text(text = "Detail screen", fontFamily = FontFamily.Monospace) },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Color.DarkGray,
+            titleContentColor = Color.White,
+            navigationIconContentColor = Color.White,
+            actionIconContentColor = Color.White
+        ),
+        navigationIcon = {
+            IconButton(onClick = {
+                if (myViewModel.lastScreen.value == "list") navController.navigate(Routes.List.route)
+                else navController.navigate(Routes.Favs.route)
+            }) {
+                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+            }
+        }
+    )
+}
 

@@ -77,8 +77,8 @@ fun MyRecyclerViewFavs(myAPIViewModel: APIViewModel, navController: NavControlle
     }
     else{
         Scaffold(
-            topBar = { myAPIViewModel.MyTopAppBarFavs(navController) },
-            bottomBar = { myAPIViewModel.MyBottomBar(navController = navController, bottomNavigationItems = myAPIViewModel.bottomNavigationItems) },
+            topBar = { MyTopAppBarFavs(navController) },
+            bottomBar = { MyBottomBar(myViewModel = APIViewModel(), navController = navController, bottomNavigationItems = bottomNavigationItems) },
             content = { paddingValues ->
                 Box(
                     modifier = Modifier
@@ -130,3 +130,25 @@ fun CharacterItemFavs(character: Data, navController: NavController, myAPIViewMo
 
 
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTopAppBarFavs(navController: NavController) {
+    TopAppBar(
+        title = { Text(text = "Favs screen", fontFamily = FontFamily.Monospace) },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Color.DarkGray,
+            titleContentColor = Color.White,
+            navigationIconContentColor = Color.White,
+            actionIconContentColor = Color.White
+        ),
+        actions = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
+            }
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Menu")
+            }
+        }
+    )
+}

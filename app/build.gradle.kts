@@ -70,6 +70,7 @@ dependencies {
     implementation("androidx.compose.material:material:1.6.1")
     implementation("androidx.room:room-ktx:1.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation ("androidx.compose.material3:material3:1.2.0-alpha02")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
     testImplementation("junit:junit:4.13.2")
