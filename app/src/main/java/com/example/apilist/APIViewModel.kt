@@ -31,6 +31,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Collections.addAll
 
 class APIViewModel: ViewModel() {
     var id : String = ""
@@ -129,11 +130,10 @@ class APIViewModel: ViewModel() {
 
 
     fun onSearchTextChange(text: String) {
-//        _searchText.value = text
-//        val charactersFromAPI = characters.value?.results // Obtener la lista de resultados desde characters.value
-//        val filteredCharacters = charactersFromAPI?.filter { it.name.contains(text, ignoreCase = true) }
-//        // Crear un nuevo PokemonList con los resultados filtrados y establecerlo en _characters
-//        _characters.value = PokemonList().apply { results.addAll(filteredCharacters ?: emptyList()) }
+        _searchText.value = text
+        val charactersFromAPI = characters.value
+        val filteredCharacters = charactersFromAPI?.data?.filter { it.name.contains(text) }
+        characters.value?.data = filteredCharacters?.toMutableList() ?: mutableListOf()
     }
 
 
