@@ -16,4 +16,9 @@ class Repository {
     suspend fun deleteFavorite(pokemon: Data) = daoInterfase.deleteCharacter(pokemon)
     suspend fun isFavorite(pokemon: Data) = daoInterfase.getCharacterById(pokemon.id).isNotEmpty()
     suspend fun getFavorites() = daoInterfase.getAllCharacters()
+
+
+    suspend fun getFilteredCharacters(text:String) = apiInterface.getSearchedCards(text)
+
+
 }

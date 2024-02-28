@@ -9,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface APIInterface {
@@ -18,6 +19,9 @@ interface APIInterface {
 
     @GET("cards/{id}")
     suspend fun getCharacterById(@Path("id") id: String): Response<Pokemon>
+
+    @GET("cards?q")
+    suspend fun getSearchedCards(@Query("q") q: String) : Response<PokemonList>
 
 
     companion object {

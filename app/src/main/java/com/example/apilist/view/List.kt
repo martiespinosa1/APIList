@@ -81,7 +81,7 @@ fun MyRecyclerView(myAPIViewModel: APIViewModel, navController: NavController) {
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
-                modifier = Modifier.width(64.dp),
+                modifier = Modifier.fillMaxWidth(0.2f),
                 color = MaterialTheme.colorScheme.secondary
             )
         }

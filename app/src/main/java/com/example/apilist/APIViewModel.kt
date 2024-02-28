@@ -50,8 +50,7 @@ class APIViewModel: ViewModel() {
     var pokemon = _pokemon
 
     // para que si entro a la detail screen de un pokemon desde la pantalla favs que al volver atras vaya a la pantalla favs y no a list
-    private val _lastScreen = MutableLiveData("list")
-    val lastScreen = _lastScreen
+    var lastScreen = MutableLiveData("list")
 
     private val _searchText = MutableLiveData<String>()
     var searchText = _searchText
@@ -127,14 +126,23 @@ class APIViewModel: ViewModel() {
 
 
 
-
-
     fun onSearchTextChange(text: String) {
         _searchText.value = text
-        val charactersFromAPI = characters.value
-        val filteredCharacters = charactersFromAPI?.data?.filter { it.name.contains(text) }
-        characters.value?.data = filteredCharacters?.toMutableList() ?: mutableListOf()
+        CoroutineScope(Dispatchers.IO).launch {
+            val textoABuscar = "name:$text*"
+            val response = repository.getFilteredCharacters(textoABuscar)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _characters.value = response.body()
+                    _loading.value = false
+                } else {
+                    Log.e("Error", "Error en la búsqueda: ${response.message()}")
+                }
+            }
+        }
     }
+
+
 
 
 
