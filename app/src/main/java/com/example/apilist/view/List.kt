@@ -43,6 +43,7 @@ fun List(navController: NavController, myViewModel: ViewModel) {
    MyRecyclerView(myViewModel = myViewModel, navController = navController)
 }
 
+//prueba
 
 @Composable
 fun MyRecyclerView(myViewModel: ViewModel, navController: NavController) {
