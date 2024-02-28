@@ -239,4 +239,3 @@ fun MyBottomBar(myViewModel: APIViewModel, navController: NavController, bottomN
     }
 }
 
-//prueba
