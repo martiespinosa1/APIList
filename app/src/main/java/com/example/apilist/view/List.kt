@@ -1,81 +1,116 @@
 package com.example.apilist.view
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.apilist.MainActivity
-import com.example.apilist.ViewModel
+import com.example.apilist.APIViewModel
 import com.example.apilist.model.Data
 import com.example.apilist.model.PokemonList
 import com.example.apilist.navigation.Routes
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun List(navController: NavController, myViewModel: ViewModel) {
-   MyRecyclerView(myViewModel = myViewModel, navController = navController)
+fun List(navController: NavController, myViewModel: APIViewModel) {
+    val searchText: String by myViewModel.searchText.observeAsState("")
+    MyRecyclerView(myViewModel = myViewModel, navController = navController, searchText = searchText)
 }
 
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyRecyclerView(myViewModel: ViewModel, navController: NavController) {
+fun MyRecyclerView(myViewModel: APIViewModel, navController: NavController, searchText: String) {
     val showLoading: Boolean by myViewModel.loading.observeAsState(true)
     val cards: PokemonList by myViewModel.characters.observeAsState(PokemonList(0, emptyList(), 0, 0, 0))
+
     myViewModel.getCharacters()
+
     if(showLoading){
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
-                modifier = Modifier.width(64.dp),
+                modifier = Modifier.fillMaxWidth(0.2f),
                 color = MaterialTheme.colorScheme.secondary
             )
         }
     }
     else{
-        LazyColumn() {
-            items(cards.data) { card ->
-                CharacterItem(character = card, navController = navController, myViewModel = myViewModel) }
-        }
+        Scaffold(
+            topBar = { MyTopAppBar(navController, myViewModel) },
+            bottomBar = { MyBottomBar(myViewModel, navController, bottomNavigationItems) },
+            content = { paddingValues ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    val filteredList = cards.data.filter { it.name.contains(searchText, ignoreCase = true) }
+                    LazyColumn() {
+                        items(filteredList) { card ->
+                            CharacterItem(character = card, navController = navController, myAPIViewModel = myViewModel)
+                        }
+                    }
+                }
+            }
+        )
     }
 }
 
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterItem(character: Data, navController: NavController, myViewModel: ViewModel) {
+fun CharacterItem(character: Data, navController: NavController, myAPIViewModel: APIViewModel) {
     Card(
         onClick = {
-            myViewModel.id = character.id
+            myAPIViewModel.id = character.id
             navController.navigate(Routes.Detail.route)
         },
         border = BorderStroke(2.dp, Color.LightGray),
@@ -100,3 +135,107 @@ fun CharacterItem(character: Data, navController: NavController, myViewModel: Vi
         }
     }
 }
+
+
+
+var showSearchBar by mutableStateOf(false)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTopAppBar(navController: NavController, myViewModel: APIViewModel) {
+    TopAppBar(
+        title = { Text(text = "Home screen", fontFamily = FontFamily.Monospace) },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Color.DarkGray,
+            titleContentColor = Color.White,
+            navigationIconContentColor = Color.White,
+            actionIconContentColor = Color.White
+        ),
+        actions = {
+            if (showSearchBar) MySearchBar(myViewModel = myViewModel)
+
+            IconButton(onClick = { showSearchBar = !showSearchBar }) {
+                Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
+            }
+
+//            IconButton(onClick = { /*TODO*/ }) {
+//                Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Menu")
+//            }
+        }
+    )
+}
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MySearchBar (myViewModel: APIViewModel) {
+    val searchText by myViewModel.searchText.observeAsState("")
+    SearchBar(
+        colors = SearchBarDefaults.colors(Color.DarkGray),
+        query = searchText,
+        onQueryChange = { myViewModel.onSearchTextChange(it) },
+        onSearch = { myViewModel.onSearchTextChange(it) },
+        active = true,
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Filled.Close,
+                contentDescription = "Close",
+                Modifier.clickable {
+                    showSearchBar = !showSearchBar
+                    myViewModel.onSearchTextChange("")
+                }
+            )
+        },
+        placeholder = { Text("What are you looking for?", fontFamily = FontFamily.Monospace, fontSize = 18.sp) },
+        onActiveChange = {},
+        modifier = Modifier
+            .fillMaxHeight(0.1f)
+            .clip(CircleShape)) {
+    }
+}
+
+
+
+sealed class BottomNavigationScreens(val route: String, val icon: ImageVector, val label: String) {
+    object Home:BottomNavigationScreens(Routes.List.route, Icons.Filled.Home, "Home")
+    object Favorite:BottomNavigationScreens(Routes.List.route, Icons.Filled.Favorite, "Favorite")
+}
+
+val bottomNavigationItems = listOf(
+    BottomNavigationScreens.Home,
+    BottomNavigationScreens.Favorite
+)
+
+
+
+@Composable
+fun MyBottomBar(myViewModel: APIViewModel, navController: NavController, bottomNavigationItems: List<BottomNavigationScreens>) {
+    BottomNavigation(
+        backgroundColor = Color.DarkGray,
+        contentColor = Color.White
+    ) {
+        BottomNavigationItem(
+            icon = { Icon(Icons.Filled.Home, contentDescription = "Home", tint = if (navController.currentDestination?.route == Routes.List.route) Color.Green else Color.White) },
+            //label = { Text(text ="Home") },
+            selected = true,
+            onClick = {
+                myViewModel.lastScreen.value = "list"
+                navController.navigate(Routes.List.route)
+            },
+            selectedContentColor = Color.Green,
+            unselectedContentColor = Color.White
+        )
+        BottomNavigationItem(
+            icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favs", tint = if (navController.currentDestination?.route == Routes.Favs.route) Color.Red else Color.White) },
+            //label = { Text("Favourites") },
+            selected = true,
+            onClick = {
+                myViewModel.lastScreen.value = "favs"
+                navController.navigate(Routes.Favs.route)
+            },
+            selectedContentColor = Color.Red,
+            unselectedContentColor = Color.White
+        )
+    }
+}
+
