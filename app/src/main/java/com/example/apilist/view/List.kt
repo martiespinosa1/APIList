@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -17,11 +16,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -39,7 +36,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,10 +48,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.room.util.query
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.bumptech.glide.integration.compose.placeholder
 import com.example.apilist.APIViewModel
 import com.example.apilist.model.Data
 import com.example.apilist.model.PokemonList
@@ -63,17 +57,18 @@ import com.example.apilist.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun List(navController: NavController, myAPIViewModel: APIViewModel) {
-    MyRecyclerView(myAPIViewModel = myAPIViewModel, navController = navController)
+fun List(navController: NavController, myViewModel: APIViewModel) {
+    val searchText: String by myViewModel.searchText.observeAsState("")
+    MyRecyclerView(myViewModel = myViewModel, navController = navController, searchText = searchText)
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyRecyclerView(myAPIViewModel: APIViewModel, navController: NavController) {
-    val showLoading: Boolean by myAPIViewModel.loading.observeAsState(true)
-    val cards: PokemonList by myAPIViewModel.characters.observeAsState(PokemonList(0, emptyList(), 0, 0, 0))
-    myAPIViewModel.getCharacters()
+fun MyRecyclerView(myViewModel: APIViewModel, navController: NavController, searchText: String) {
+    val showLoading: Boolean by myViewModel.loading.observeAsState(true)
+    val cards: PokemonList by myViewModel.characters.observeAsState(PokemonList(0, emptyList(), 0, 0, 0))
+    myViewModel.getCharacters()
 
     if(showLoading){
         Box(
@@ -88,22 +83,23 @@ fun MyRecyclerView(myAPIViewModel: APIViewModel, navController: NavController) {
     }
     else{
         Scaffold(
-            topBar = { MyTopAppBar(navController) },
-            bottomBar = { MyBottomBar(myViewModel = APIViewModel(), navController = navController, bottomNavigationItems = bottomNavigationItems) },
+            topBar = { MyTopAppBar(navController, myViewModel) },
+            bottomBar = { MyBottomBar(myViewModel, navController, bottomNavigationItems) },
             content = { paddingValues ->
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
                 ) {
+                    val filteredList = cards.data.filter { it.name.contains(searchText, ignoreCase = true) }
                     LazyColumn() {
-                        items(cards.data) { card ->
-                            CharacterItem(character = card, navController = navController, myAPIViewModel = myAPIViewModel) }
+                        items(filteredList) { card ->
+                            CharacterItem(character = card, navController = navController, myAPIViewModel = myViewModel)
+                        }
                     }
                 }
             }
         )
-
     }
 }
 
@@ -144,7 +140,7 @@ fun CharacterItem(character: Data, navController: NavController, myAPIViewModel:
 var showSearchBar by mutableStateOf(false)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopAppBar(navController: NavController) {
+fun MyTopAppBar(navController: NavController, myViewModel: APIViewModel) {
     TopAppBar(
         title = { Text(text = "Home screen", fontFamily = FontFamily.Monospace) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -154,7 +150,7 @@ fun MyTopAppBar(navController: NavController) {
             actionIconContentColor = Color.White
         ),
         actions = {
-            if (showSearchBar) MySearchBar(myViewModel = APIViewModel())
+            if (showSearchBar) MySearchBar(myViewModel = myViewModel)
 
             IconButton(onClick = { showSearchBar = !showSearchBar }) {
                 Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")

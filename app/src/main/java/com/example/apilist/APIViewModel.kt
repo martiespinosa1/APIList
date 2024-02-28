@@ -53,7 +53,7 @@ class APIViewModel: ViewModel() {
     var lastScreen = MutableLiveData("list")
 
     private val _searchText = MutableLiveData<String>()
-    var searchText = _searchText
+    val searchText = _searchText
 
 
 
@@ -128,18 +128,6 @@ class APIViewModel: ViewModel() {
 
     fun onSearchTextChange(text: String) {
         _searchText.value = text
-        CoroutineScope(Dispatchers.IO).launch {
-            val textoABuscar = "name:$text*"
-            val response = repository.getFilteredCharacters(textoABuscar)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    _characters.value = response.body()
-                    _loading.value = false
-                } else {
-                    Log.e("Error", "Error en la búsqueda: ${response.message()}")
-                }
-            }
-        }
     }
 
 
