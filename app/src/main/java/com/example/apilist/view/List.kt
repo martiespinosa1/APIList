@@ -68,6 +68,7 @@ fun List(navController: NavController, myViewModel: APIViewModel) {
 fun MyRecyclerView(myViewModel: APIViewModel, navController: NavController, searchText: String) {
     val showLoading: Boolean by myViewModel.loading.observeAsState(true)
     val cards: PokemonList by myViewModel.characters.observeAsState(PokemonList(0, emptyList(), 0, 0, 0))
+
     myViewModel.getCharacters()
 
     if(showLoading){

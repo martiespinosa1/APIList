@@ -11,11 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
@@ -34,7 +30,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -45,23 +40,28 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.apilist.APIViewModel
 import com.example.apilist.model.Data
+import com.example.apilist.model.Images
 import com.example.apilist.model.PokemonList
 import com.example.apilist.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Favs(navController: NavController, myAPIViewModel: APIViewModel) {
-    myAPIViewModel.getFavorites()
+fun Favs(navController: NavController, myViewModel: APIViewModel) {
+    val searchText: String by myViewModel.searchText.observeAsState("")
 
-    MyRecyclerViewFavs(myAPIViewModel = myAPIViewModel, navController = navController)
+    myViewModel.getFavorites()
+
+    MyRecyclerViewFavs(myAPIViewModel = myViewModel, navController = navController, searchText = searchText)
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyRecyclerViewFavs(myAPIViewModel: APIViewModel, navController: NavController) {
+fun MyRecyclerViewFavs(myAPIViewModel: APIViewModel, navController: NavController, searchText: String) {
     val showLoading: Boolean by myAPIViewModel.loading.observeAsState(true)
     val cards: PokemonList by myAPIViewModel.characters.observeAsState(PokemonList(0, emptyList(), 0, 0, 0))
+    val favs: MutableList<Data> by myAPIViewModel.favorites.observeAsState(mutableListOf(Data(0, "", emptyList(), "", "", "", Images("",""), "", "", "", "", emptyList(), emptyList(), emptyList(), "", emptyList())))
+
     myAPIViewModel.getCharacters()
 
     if(showLoading){
@@ -77,7 +77,7 @@ fun MyRecyclerViewFavs(myAPIViewModel: APIViewModel, navController: NavControlle
     }
     else{
         Scaffold(
-            topBar = { MyTopAppBarFavs(navController) },
+            topBar = { MyTopAppBarFavs(navController, myAPIViewModel) },
             bottomBar = { MyBottomBar(myViewModel = APIViewModel(), navController = navController, bottomNavigationItems = bottomNavigationItems) },
             content = { paddingValues ->
                 Box(
@@ -86,7 +86,8 @@ fun MyRecyclerViewFavs(myAPIViewModel: APIViewModel, navController: NavControlle
                         .padding(paddingValues)
                 ) {
                     LazyColumn() {
-                        items(myAPIViewModel.favorites.value ?: emptyList()) { fav ->
+                        val filteredListFavs = favs.filter { it.name.contains(searchText, ignoreCase = true) }
+                        items(filteredListFavs) { fav ->
                             CharacterItemFavs(character = fav, navController = navController, myAPIViewModel = myAPIViewModel) }
                     }
                 }
@@ -133,7 +134,7 @@ fun CharacterItemFavs(character: Data, navController: NavController, myAPIViewMo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopAppBarFavs(navController: NavController) {
+fun MyTopAppBarFavs(navController: NavController, myViewModel: APIViewModel) {
     TopAppBar(
         title = { Text(text = "Favs screen", fontFamily = FontFamily.Monospace) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -143,12 +144,15 @@ fun MyTopAppBarFavs(navController: NavController) {
             actionIconContentColor = Color.White
         ),
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            if (showSearchBar) MySearchBar(myViewModel = myViewModel)
+
+            IconButton(onClick = { showSearchBar = !showSearchBar }) {
                 Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
             }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Menu")
-            }
+
+//            IconButton(onClick = { /*TODO*/ }) {
+//                Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Menu")
+//            }
         }
     )
 }
