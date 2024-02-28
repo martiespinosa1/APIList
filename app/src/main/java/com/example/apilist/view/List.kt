@@ -180,7 +180,10 @@ fun MySearchBar (myViewModel: APIViewModel) {
             Icon(
                 imageVector = Icons.Filled.Close,
                 contentDescription = "Close",
-                Modifier.clickable { showSearchBar = !showSearchBar }
+                Modifier.clickable {
+                    showSearchBar = !showSearchBar
+                    myViewModel.onSearchTextChange("")
+                }
             )
         },
         placeholder = { Text("What are you looking for?", fontFamily = FontFamily.Monospace, fontSize = 18.sp) },
