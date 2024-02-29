@@ -49,9 +49,6 @@ class APIViewModel: ViewModel() {
     private var _pokemon = MutableLiveData<Pokemon>()
     var pokemon = _pokemon
 
-    // para que si entro a la detail screen de un pokemon desde la pantalla favs que al volver atras vaya a la pantalla favs y no a list
-    var lastScreen = MutableLiveData("list")
-
     private val _searchText = MutableLiveData<String>()
     val searchText = _searchText
 

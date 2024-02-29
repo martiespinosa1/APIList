@@ -159,10 +159,7 @@ fun MyTopAppBarDetail(myViewModel: APIViewModel, navController: NavController) {
             actionIconContentColor = Color.White
         ),
         navigationIcon = {
-            IconButton(onClick = {
-                if (myViewModel.lastScreen.value == "list") navController.navigate(Routes.List.route)
-                else navController.navigate(Routes.Favs.route)
-            }) {
+            IconButton(onClick = { navController.popBackStack() }) {
                 Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
             }
         }

@@ -219,7 +219,6 @@ fun MyBottomBar(myViewModel: APIViewModel, navController: NavController, bottomN
             //label = { Text(text ="Home") },
             selected = true,
             onClick = {
-                myViewModel.lastScreen.value = "list"
                 navController.navigate(Routes.List.route)
             },
             selectedContentColor = Color.Green,
@@ -230,7 +229,6 @@ fun MyBottomBar(myViewModel: APIViewModel, navController: NavController, bottomN
             //label = { Text("Favourites") },
             selected = true,
             onClick = {
-                myViewModel.lastScreen.value = "favs"
                 navController.navigate(Routes.Favs.route)
             },
             selectedContentColor = Color.Red,
