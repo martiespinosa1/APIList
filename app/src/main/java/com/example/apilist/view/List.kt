@@ -1,6 +1,7 @@
 package com.example.apilist.view
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -78,7 +80,7 @@ fun MyRecyclerView(myViewModel: APIViewModel, navController: NavController, sear
         ) {
             CircularProgressIndicator(
                 modifier = Modifier.fillMaxWidth(0.2f),
-                color = MaterialTheme.colorScheme.secondary
+                color = Color.LightGray
             )
         }
     }
@@ -91,6 +93,7 @@ fun MyRecyclerView(myViewModel: APIViewModel, navController: NavController, sear
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
+                        .background(Color.DarkGray)
                 ) {
                     val filteredList = cards.data.filter { it.name.contains(searchText, ignoreCase = true) }
                     LazyColumn() {
@@ -113,28 +116,32 @@ fun CharacterItem(character: Data, navController: NavController, myAPIViewModel:
             myAPIViewModel.id = character.id
             navController.navigate(Routes.Detail.route)
         },
-        border = BorderStroke(2.dp, Color.LightGray),
+        border = BorderStroke(3.dp, Color.LightGray),
         shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(8.dp)
     ) {
-        Row(modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()) {
-            GlideImage(
-                model = character.images.small,
-                contentDescription = "Card Image",
-                contentScale = ContentScale.FillHeight,
-                modifier = Modifier.size(125.dp)
-            )
-            Text(
-                text = character.name,
-                fontSize = 23.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.Monospace
-            )
+        Box(
+            modifier = Modifier.background(Color.Gray).fillMaxWidth()
+        ) {
+            Row(modifier = Modifier.padding(16.dp)) {
+                GlideImage(
+                    model = character.images.small,
+                    contentDescription = "Card Image",
+                    contentScale = ContentScale.FillHeight,
+                    modifier = Modifier.size(125.dp)
+                )
+                Text(
+                    text = character.name,
+                    color = Color.DarkGray,
+                    fontSize = 23.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Monospace
+                )
+            }
         }
     }
 }
+
 
 
 
@@ -156,10 +163,6 @@ fun MyTopAppBar(navController: NavController, myViewModel: APIViewModel) {
             IconButton(onClick = { showSearchBar = !showSearchBar }) {
                 Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
             }
-
-//            IconButton(onClick = { /*TODO*/ }) {
-//                Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Menu")
-//            }
         }
     )
 }
@@ -171,7 +174,8 @@ fun MyTopAppBar(navController: NavController, myViewModel: APIViewModel) {
 fun MySearchBar (myViewModel: APIViewModel) {
     val searchText by myViewModel.searchText.observeAsState("")
     SearchBar(
-        colors = SearchBarDefaults.colors(Color.DarkGray),
+        colors = SearchBarDefaults.colors(Color.DarkGray, inputFieldColors = TextFieldDefaults.colors(focusedTextColor = Color.LightGray, unfocusedTextColor = Color.LightGray)
+        ),
         query = searchText,
         onQueryChange = { myViewModel.onSearchTextChange(it) },
         onSearch = { myViewModel.onSearchTextChange(it) },
@@ -180,13 +184,14 @@ fun MySearchBar (myViewModel: APIViewModel) {
             Icon(
                 imageVector = Icons.Filled.Close,
                 contentDescription = "Close",
-                Modifier.clickable {
+                modifier = Modifier.clickable {
                     showSearchBar = !showSearchBar
                     myViewModel.onSearchTextChange("")
-                }
+                },
+                tint = Color.White
             )
         },
-        placeholder = { Text("What are you looking for?", fontFamily = FontFamily.Monospace, fontSize = 18.sp) },
+        placeholder = { Text("Qué Pokemon buscas?", fontFamily = FontFamily.Monospace, fontSize = 18.sp, color = Color.LightGray) },
         onActiveChange = {},
         modifier = Modifier
             .fillMaxHeight(0.1f)
@@ -215,7 +220,7 @@ fun MyBottomBar(myViewModel: APIViewModel, navController: NavController, bottomN
         contentColor = Color.White
     ) {
         BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Home, contentDescription = "Home", tint = if (navController.currentDestination?.route == Routes.List.route) Color.Green else Color.White) },
+            icon = { Icon(Icons.Filled.Home, contentDescription = "Home", tint = if (navController.currentDestination?.route == Routes.List.route) Color.Green.copy(alpha = 0.6f) else Color.White) },
             //label = { Text(text ="Home") },
             selected = true,
             onClick = {
@@ -225,7 +230,7 @@ fun MyBottomBar(myViewModel: APIViewModel, navController: NavController, bottomN
             unselectedContentColor = Color.White
         )
         BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favs", tint = if (navController.currentDestination?.route == Routes.Favs.route) Color.Red else Color.White) },
+            icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favs", tint = if (navController.currentDestination?.route == Routes.Favs.route) Color.Red.copy(alpha = 0.6f) else Color.White) },
             //label = { Text("Favourites") },
             selected = true,
             onClick = {

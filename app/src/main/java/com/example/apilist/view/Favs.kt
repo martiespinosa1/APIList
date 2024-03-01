@@ -1,6 +1,7 @@
 package com.example.apilist.view
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -84,6 +85,7 @@ fun MyRecyclerViewFavs(myAPIViewModel: APIViewModel, navController: NavControlle
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
+                        .background(Color.DarkGray)
                 ) {
                     LazyColumn() {
                         val filteredListFavs = favs.filter { it.name.contains(searchText, ignoreCase = true) }
@@ -106,25 +108,28 @@ fun CharacterItemFavs(character: Data, navController: NavController, myAPIViewMo
             myAPIViewModel.id = character.id
             navController.navigate(Routes.Detail.route)
         },
-        border = BorderStroke(2.dp, Color.LightGray),
+        border = BorderStroke(3.dp, Color.LightGray),
         shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(8.dp)
     ) {
-        Row(modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()) {
-            GlideImage(
-                model = character.images.small,
-                contentDescription = "Card Image",
-                contentScale = ContentScale.FillHeight,
-                modifier = Modifier.size(125.dp)
-            )
-            Text(
-                text = character.name,
-                fontSize = 23.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.Monospace
-            )
+        Box(
+            modifier = Modifier.background(Color.Gray).fillMaxWidth()
+        ) {
+            Row(modifier = Modifier.padding(16.dp)) {
+                GlideImage(
+                    model = character.images.small,
+                    contentDescription = "Card Image",
+                    contentScale = ContentScale.FillHeight,
+                    modifier = Modifier.size(125.dp)
+                )
+                Text(
+                    text = character.name,
+                    color = Color.DarkGray,
+                    fontSize = 23.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Monospace
+                )
+            }
         }
     }
 }

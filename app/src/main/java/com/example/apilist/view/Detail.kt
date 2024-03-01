@@ -1,5 +1,6 @@
 package com.example.apilist.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,9 +54,10 @@ fun Detail(navController: NavController, myViewModel: APIViewModel) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues),
+                    .padding(paddingValues)
+                    .background(Color.DarkGray),
                 verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             )
             {
                 GlideImage(
@@ -73,6 +75,7 @@ fun Detail(navController: NavController, myViewModel: APIViewModel) {
                 ) {
                     Text(
                         text = poke.data.name,
+                        color = Color.LightGray,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = FontFamily.Monospace
@@ -92,7 +95,8 @@ fun Detail(navController: NavController, myViewModel: APIViewModel) {
                             contentDescription = "Heart",
                             modifier = Modifier
                                 .size(45.dp)
-                                .padding(start = 8.dp)
+                                .padding(start = 8.dp),
+                            tint = Color.LightGray
                         )
                     }
                 }
@@ -106,18 +110,21 @@ fun Detail(navController: NavController, myViewModel: APIViewModel) {
                     {
                         Text(
                             text = "${poke.data.flavorText ?: ""}",
+                            color = Color.LightGray,
                             fontSize = 15.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                         Text(
                             text = "HP: ${poke.data.hp ?: ""}",
+                            color = Color.LightGray,
                             fontSize = 18.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                         Text(
                             text = "Rarity: ${poke.data.rarity ?: ""}",
+                            color = Color.LightGray,
                             fontSize = 18.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)
@@ -125,12 +132,14 @@ fun Detail(navController: NavController, myViewModel: APIViewModel) {
                         val valueText = poke.data.evolvesFrom ?: ""
                         Text(
                             text = "Evolves from: $valueText",
+                            color = Color.LightGray,
                             fontSize = 18.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                         Text(
                             text = "Evolves to: ${poke.data.evolvesTo ?: ""}",
+                            color = Color.LightGray,
                             fontSize = 18.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(bottom = 10.dp)
@@ -154,9 +163,9 @@ fun MyTopAppBarDetail(myViewModel: APIViewModel, navController: NavController) {
         title = { Text(text = "Detail screen", fontFamily = FontFamily.Monospace) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Color.DarkGray,
-            titleContentColor = Color.White,
-            navigationIconContentColor = Color.White,
-            actionIconContentColor = Color.White
+            titleContentColor = Color.LightGray,
+            navigationIconContentColor = Color.LightGray,
+            actionIconContentColor = Color.LightGray
         ),
         navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
