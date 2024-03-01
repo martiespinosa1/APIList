@@ -52,9 +52,9 @@ fun Launch(alphaAnim: Float) {
         )
 
         Text(
-            text = "Pokémon Card List",
+            text = "Pokemon Cards",
             color = Color.LightGray,
-            fontSize = 23.sp,
+            fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.Monospace,
             modifier = Modifier.padding(top = 30.dp).alpha(alphaAnim)

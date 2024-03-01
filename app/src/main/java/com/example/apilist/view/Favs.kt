@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -112,13 +113,17 @@ fun CharacterItemFavs(character: Data, navController: NavController, myAPIViewMo
         Box(
             modifier = Modifier.background(Color.Gray).fillMaxWidth()
         ) {
-            Row(modifier = Modifier.padding(16.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 16.dp, end = 16.dp, bottom = 16.dp)
+            ) {
                 GlideImage(
                     model = character.images.small,
                     contentDescription = "Card Image",
                     contentScale = ContentScale.FillHeight,
                     modifier = Modifier.size(125.dp)
                 )
+                Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = character.name,
                     color = Color.LightGray,
