@@ -139,13 +139,13 @@ fun CharacterItem(character: Data, navController: NavController, myAPIViewModel:
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.Monospace
                 )
-                Text(
-                    text = character.types?.get(0) ?: "",
-                    color = Color.LightGray,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Monospace
-                )
+//                Text(
+//                    text = character.types?.get(0) ?: "",
+//                    color = Color.LightGray,
+//                    fontSize = 18.sp,
+//                    fontWeight = FontWeight.Bold,
+//                    fontFamily = FontFamily.Monospace
+//                )
             }
         }
     }
@@ -199,7 +199,7 @@ fun MySearchBar (myViewModel: APIViewModel) {
                 tint = Color.White
             )
         },
-        placeholder = { Text("Qué Pokemon buscas?", fontFamily = FontFamily.Monospace, fontSize = 18.sp, color = Color.LightGray) },
+        placeholder = { Text("Search Pokemon...", fontFamily = FontFamily.Monospace, fontSize = 18.sp, color = Color.LightGray) },
         onActiveChange = {},
         modifier = Modifier
             .fillMaxHeight(0.1f)

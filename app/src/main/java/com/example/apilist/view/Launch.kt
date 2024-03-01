@@ -57,7 +57,7 @@ fun Launch(alphaAnim: Float) {
         )
 
         Text(
-            text = "API List App",
+            text = "Pokémon List",
             color = Color.LightGray,
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,

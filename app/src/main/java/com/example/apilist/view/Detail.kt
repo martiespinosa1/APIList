@@ -57,7 +57,7 @@ fun Detail(navController: NavController, myViewModel: APIViewModel) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues)
+                    .padding(top = paddingValues.calculateTopPadding())
                     .background(Color.DarkGray)
             ) {
                 Card(
@@ -68,7 +68,7 @@ fun Detail(navController: NavController, myViewModel: APIViewModel) {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(paddingValues)
+                            //.padding(paddingValues)
                             .background(Color.Gray),
                         verticalArrangement = Arrangement.Top,
                         horizontalAlignment = Alignment.CenterHorizontally,
