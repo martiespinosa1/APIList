@@ -40,19 +40,18 @@ import com.example.apilist.APIViewModel
 import com.example.apilist.model.Data
 import com.example.apilist.model.Images
 import com.example.apilist.model.Pokemon
-import com.example.apilist.navigation.Routes
 
-@OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Detail(navController: NavController, myViewModel: APIViewModel) {
     val poke: Pokemon by myViewModel.pokemon.observeAsState(Pokemon(Data(0, "", emptyList(), "", "", "", Images("",""), "", "", "", "", emptyList(), emptyList(), emptyList(), "", emptyList())))
     myViewModel.getCharacterById()
     val fav by myViewModel.isFavorite.observeAsState(false)
     myViewModel.isFavorite(poke.data)
-    var favIcon = if (fav) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+    val favIcon = if (fav) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
 
     Scaffold(
-        topBar = { MyTopAppBarDetail(myViewModel, navController) },
+        topBar = { MyTopAppBarDetail(navController) },
         content = { paddingValues ->
             Box(
                 modifier = Modifier
@@ -115,15 +114,14 @@ fun Detail(navController: NavController, myViewModel: APIViewModel) {
                             }
                         }
 
-                        Box(modifier = Modifier.padding(top = 25.dp)) {
+                        Box(modifier = Modifier.padding(top = 15.dp, bottom = 25.dp, start = 25.dp, end = 25.dp)) {
                             Column(
                                 verticalArrangement = Arrangement.Top,
-                                horizontalAlignment = Alignment.Start,
-                                modifier = Modifier.padding(start = 50.dp, end = 50.dp)
+                                horizontalAlignment = Alignment.Start
                             )
                             {
                                 Text(
-                                    text = "${poke.data.flavorText ?: ""}",
+                                    text = poke.data.flavorText ?: "",
                                     color = Color.LightGray,
                                     fontSize = 15.sp,
                                     fontFamily = FontFamily.Monospace,
@@ -137,27 +135,37 @@ fun Detail(navController: NavController, myViewModel: APIViewModel) {
                                     modifier = Modifier.padding(bottom = 10.dp)
                                 )
                                 Text(
+                                    text = "Type: ${poke.data.types?.getOrNull(0) ?: ""}",
+                                    color = Color.LightGray,
+                                    fontSize = 18.sp,
+                                    fontFamily = FontFamily.Monospace,
+                                    modifier = Modifier.padding(bottom = 10.dp)
+                                )
+                                Text(
                                     text = "Rarity: ${poke.data.rarity ?: ""}",
                                     color = Color.LightGray,
                                     fontSize = 18.sp,
                                     fontFamily = FontFamily.Monospace,
                                     modifier = Modifier.padding(bottom = 10.dp)
                                 )
-                                val valueText = poke.data.evolvesFrom ?: ""
-                                Text(
-                                    text = "Evolves from: $valueText",
-                                    color = Color.LightGray,
-                                    fontSize = 18.sp,
-                                    fontFamily = FontFamily.Monospace,
-                                    modifier = Modifier.padding(bottom = 10.dp)
-                                )
-                                Text(
-                                    text = "Evolves to: ${poke.data.evolvesTo ?: ""}",
-                                    color = Color.LightGray,
-                                    fontSize = 18.sp,
-                                    fontFamily = FontFamily.Monospace,
-                                    modifier = Modifier.padding(bottom = 10.dp)
-                                )
+                                if (!poke.data.evolvesFrom.isNullOrEmpty()) {
+                                    Text(
+                                        text = "Evolves from: ${poke.data.evolvesFrom}",
+                                        color = Color.LightGray,
+                                        fontSize = 18.sp,
+                                        fontFamily = FontFamily.Monospace,
+                                        modifier = Modifier.padding(bottom = 10.dp)
+                                    )
+                                }
+                                if (!poke.data.evolvesTo.isNullOrEmpty()) {
+                                    Text(
+                                        text = "Evolves to: ${poke.data.evolvesTo!![0]}",
+                                        color = Color.LightGray,
+                                        fontSize = 18.sp,
+                                        fontFamily = FontFamily.Monospace,
+                                        modifier = Modifier.padding(bottom = 10.dp)
+                                    )
+                                }
                             }
                         }
                     }
@@ -174,7 +182,7 @@ fun Detail(navController: NavController, myViewModel: APIViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopAppBarDetail(myViewModel: APIViewModel, navController: NavController) {
+fun MyTopAppBarDetail(navController: NavController) {
     TopAppBar(
         title = { Text(text = "Detail screen", fontFamily = FontFamily.Monospace) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -184,7 +192,7 @@ fun MyTopAppBarDetail(myViewModel: APIViewModel, navController: NavController) {
             actionIconContentColor = Color.LightGray
         ),
         navigationIcon = {
-            IconButton(onClick = { navController.popBackStack() }) {
+            IconButton(onClick = { navController.popBackStack() }) { // Así se mantiene el lugar del scroll donde se encontraba y no al inicio cada vez.
                 Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
             }
         }

@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
@@ -27,7 +26,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
@@ -46,7 +44,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -59,7 +56,6 @@ import com.example.apilist.model.Data
 import com.example.apilist.model.PokemonList
 import com.example.apilist.navigation.Routes
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun List(navController: NavController, myViewModel: APIViewModel) {
     val searchText: String by myViewModel.searchText.observeAsState("")
@@ -67,7 +63,6 @@ fun List(navController: NavController, myViewModel: APIViewModel) {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyRecyclerView(myViewModel: APIViewModel, navController: NavController, searchText: String) {
     val showLoading: Boolean by myViewModel.loading.observeAsState(true)

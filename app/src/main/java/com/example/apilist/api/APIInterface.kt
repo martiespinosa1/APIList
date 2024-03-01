@@ -1,6 +1,5 @@
 package com.example.apilist.api
 
-import com.example.apilist.model.Data
 import com.example.apilist.model.Pokemon
 import com.example.apilist.model.PokemonList
 import okhttp3.OkHttpClient
@@ -10,7 +9,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import retrofit2.http.Url
 
 interface APIInterface {
 

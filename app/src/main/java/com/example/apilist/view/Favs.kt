@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -45,7 +44,6 @@ import com.example.apilist.model.Images
 import com.example.apilist.model.PokemonList
 import com.example.apilist.navigation.Routes
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Favs(navController: NavController, myViewModel: APIViewModel) {
     val searchText: String by myViewModel.searchText.observeAsState("")
@@ -56,7 +54,6 @@ fun Favs(navController: NavController, myViewModel: APIViewModel) {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyRecyclerViewFavs(myAPIViewModel: APIViewModel, navController: NavController, searchText: String) {
     val showLoading: Boolean by myAPIViewModel.loading.observeAsState(true)
@@ -78,7 +75,7 @@ fun MyRecyclerViewFavs(myAPIViewModel: APIViewModel, navController: NavControlle
     }
     else{
         Scaffold(
-            topBar = { MyTopAppBarFavs(navController, myAPIViewModel) },
+            topBar = { MyTopAppBarFavs(myAPIViewModel) },
             bottomBar = { MyBottomBar(myViewModel = APIViewModel(), navController = navController, bottomNavigationItems = bottomNavigationItems) },
             content = { paddingValues ->
                 Box(
@@ -139,7 +136,7 @@ fun CharacterItemFavs(character: Data, navController: NavController, myAPIViewMo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopAppBarFavs(navController: NavController, myViewModel: APIViewModel) {
+fun MyTopAppBarFavs(myViewModel: APIViewModel) {
     TopAppBar(
         title = { Text(text = "Favs screen", fontFamily = FontFamily.Monospace) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -154,10 +151,6 @@ fun MyTopAppBarFavs(navController: NavController, myViewModel: APIViewModel) {
             IconButton(onClick = { showSearchBar = !showSearchBar }) {
                 Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
             }
-
-//            IconButton(onClick = { /*TODO*/ }) {
-//                Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Menu")
-//            }
         }
     )
 }
