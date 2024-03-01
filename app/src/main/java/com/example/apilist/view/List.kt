@@ -85,7 +85,7 @@ fun MyRecyclerView(myViewModel: APIViewModel, navController: NavController, sear
     }
     else{
         Scaffold(
-            topBar = { MyTopAppBar(navController, myViewModel) },
+            topBar = { MyTopAppBar(myViewModel) },
             bottomBar = { MyBottomBar(myViewModel, navController, bottomNavigationItems) },
             content = { paddingValues ->
                 Box(
@@ -150,7 +150,7 @@ fun CharacterItem(character: Data, navController: NavController, myAPIViewModel:
 var showSearchBar by mutableStateOf(false)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopAppBar(navController: NavController, myViewModel: APIViewModel) {
+fun MyTopAppBar(myViewModel: APIViewModel) {
     TopAppBar(
         title = { Text(text = "Home screen", fontFamily = FontFamily.Monospace) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
