@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.apilist.APIViewModel
+import com.example.apilist.viewmodel.APIViewModel
 import com.example.apilist.model.Data
 import com.example.apilist.model.Images
 import com.example.apilist.model.Pokemon

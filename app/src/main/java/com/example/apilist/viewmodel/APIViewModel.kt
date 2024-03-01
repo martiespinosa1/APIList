@@ -1,4 +1,4 @@
-package com.example.apilist
+package com.example.apilist.viewmodel
 
 import android.util.Log
 import androidx.compose.material.BottomNavigation
