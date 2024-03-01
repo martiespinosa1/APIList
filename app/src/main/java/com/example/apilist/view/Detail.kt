@@ -1,5 +1,6 @@
 package com.example.apilist.view
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,10 +9,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -51,99 +54,112 @@ fun Detail(navController: NavController, myViewModel: APIViewModel) {
     Scaffold(
         topBar = { MyTopAppBarDetail(myViewModel, navController) },
         content = { paddingValues ->
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .background(Color.DarkGray),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            )
-            {
-                GlideImage(
-                    model = poke.data.images.large,
-                    contentDescription = "Card Image",
-                    contentScale = ContentScale.FillHeight,
-                    modifier = Modifier
-                        .size(360.dp)
-                        .padding(top = 25.dp)
-                )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(top = 15.dp)
+                    .background(Color.DarkGray)
+            ) {
+                Card(
+                    border = BorderStroke(3.dp, Color.LightGray),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.padding(8.dp)
                 ) {
-                    Text(
-                        text = poke.data.name,
-                        color = Color.LightGray,
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace
-                    )
-
-                    IconButton(onClick = {
-                        myViewModel.isFavorite(poke.data)
-                        if (!fav) {
-                            myViewModel.saveAsFavorite(poke.data)
-                        } else {
-                            myViewModel.deleteFavorite(poke.data)
-                        }
-
-                    }) {
-                        Icon(
-                            imageVector = favIcon,
-                            contentDescription = "Heart",
-                            modifier = Modifier
-                                .size(45.dp)
-                                .padding(start = 8.dp),
-                            tint = Color.LightGray
-                        )
-                    }
-                }
-
-                Box(modifier = Modifier.padding(top = 25.dp)) {
                     Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues)
+                            .background(Color.Gray),
                         verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.Start,
-                        modifier = Modifier.padding(start = 50.dp, end = 50.dp)
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     )
                     {
-                        Text(
-                            text = "${poke.data.flavorText ?: ""}",
-                            color = Color.LightGray,
-                            fontSize = 15.sp,
-                            fontFamily = FontFamily.Monospace,
-                            modifier = Modifier.padding(bottom = 10.dp)
+                        GlideImage(
+                            model = poke.data.images.large,
+                            contentDescription = "Card Image",
+                            contentScale = ContentScale.FillHeight,
+                            modifier = Modifier
+                                .size(360.dp)
+                                .padding(top = 25.dp)
                         )
-                        Text(
-                            text = "HP: ${poke.data.hp ?: ""}",
-                            color = Color.LightGray,
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily.Monospace,
-                            modifier = Modifier.padding(bottom = 10.dp)
-                        )
-                        Text(
-                            text = "Rarity: ${poke.data.rarity ?: ""}",
-                            color = Color.LightGray,
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily.Monospace,
-                            modifier = Modifier.padding(bottom = 10.dp)
-                        )
-                        val valueText = poke.data.evolvesFrom ?: ""
-                        Text(
-                            text = "Evolves from: $valueText",
-                            color = Color.LightGray,
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily.Monospace,
-                            modifier = Modifier.padding(bottom = 10.dp)
-                        )
-                        Text(
-                            text = "Evolves to: ${poke.data.evolvesTo ?: ""}",
-                            color = Color.LightGray,
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily.Monospace,
-                            modifier = Modifier.padding(bottom = 10.dp)
-                        )
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(top = 15.dp)
+                        ) {
+                            Text(
+                                text = poke.data.name,
+                                color = Color.LightGray,
+                                fontSize = 28.sp,
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = FontFamily.Monospace
+                            )
+
+                            IconButton(onClick = {
+                                myViewModel.isFavorite(poke.data)
+                                if (!fav) {
+                                    myViewModel.saveAsFavorite(poke.data)
+                                } else {
+                                    myViewModel.deleteFavorite(poke.data)
+                                }
+
+                            }) {
+                                Icon(
+                                    imageVector = favIcon,
+                                    contentDescription = "Heart",
+                                    modifier = Modifier
+                                        .size(45.dp)
+                                        .padding(start = 8.dp),
+                                    tint = Color.LightGray
+                                )
+                            }
+                        }
+
+                        Box(modifier = Modifier.padding(top = 25.dp)) {
+                            Column(
+                                verticalArrangement = Arrangement.Top,
+                                horizontalAlignment = Alignment.Start,
+                                modifier = Modifier.padding(start = 50.dp, end = 50.dp)
+                            )
+                            {
+                                Text(
+                                    text = "${poke.data.flavorText ?: ""}",
+                                    color = Color.LightGray,
+                                    fontSize = 15.sp,
+                                    fontFamily = FontFamily.Monospace,
+                                    modifier = Modifier.padding(bottom = 10.dp)
+                                )
+                                Text(
+                                    text = "HP: ${poke.data.hp ?: ""}",
+                                    color = Color.LightGray,
+                                    fontSize = 18.sp,
+                                    fontFamily = FontFamily.Monospace,
+                                    modifier = Modifier.padding(bottom = 10.dp)
+                                )
+                                Text(
+                                    text = "Rarity: ${poke.data.rarity ?: ""}",
+                                    color = Color.LightGray,
+                                    fontSize = 18.sp,
+                                    fontFamily = FontFamily.Monospace,
+                                    modifier = Modifier.padding(bottom = 10.dp)
+                                )
+                                val valueText = poke.data.evolvesFrom ?: ""
+                                Text(
+                                    text = "Evolves from: $valueText",
+                                    color = Color.LightGray,
+                                    fontSize = 18.sp,
+                                    fontFamily = FontFamily.Monospace,
+                                    modifier = Modifier.padding(bottom = 10.dp)
+                                )
+                                Text(
+                                    text = "Evolves to: ${poke.data.evolvesTo ?: ""}",
+                                    color = Color.LightGray,
+                                    fontSize = 18.sp,
+                                    fontFamily = FontFamily.Monospace,
+                                    modifier = Modifier.padding(bottom = 10.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }

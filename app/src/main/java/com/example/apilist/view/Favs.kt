@@ -124,7 +124,7 @@ fun CharacterItemFavs(character: Data, navController: NavController, myAPIViewMo
                 )
                 Text(
                     text = character.name,
-                    color = Color.DarkGray,
+                    color = Color.LightGray,
                     fontSize = 23.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.Monospace

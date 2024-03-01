@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
@@ -45,6 +46,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -132,8 +134,15 @@ fun CharacterItem(character: Data, navController: NavController, myAPIViewModel:
                 )
                 Text(
                     text = character.name,
-                    color = Color.DarkGray,
+                    color = Color.LightGray,
                     fontSize = 23.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Monospace
+                )
+                Text(
+                    text = character.types?.get(0) ?: "",
+                    color = Color.LightGray,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.Monospace
                 )
@@ -141,7 +150,6 @@ fun CharacterItem(character: Data, navController: NavController, myAPIViewModel:
         }
     }
 }
-
 
 
 
@@ -195,8 +203,8 @@ fun MySearchBar (myViewModel: APIViewModel) {
         onActiveChange = {},
         modifier = Modifier
             .fillMaxHeight(0.1f)
-            .clip(CircleShape)) {
-    }
+            .clip(CircleShape)
+    ) {}
 }
 
 
